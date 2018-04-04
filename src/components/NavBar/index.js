@@ -22,7 +22,6 @@ class NavBar extends Component {
             </Menu.Item>
           </Menu.Menu>
         </Menu>
-
       </Router>
     )
   }

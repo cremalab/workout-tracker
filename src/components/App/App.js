@@ -13,17 +13,17 @@ const Content = styled.div`
     background-size: cover;
     background-attachment: fixed;
     background-repeat: no-repeat;
-    overflow: hidden;
+    overflow: hidden ;
 `;
 
 class App extends Component {
   render() {
-    return (
-      <Content>
-        <NavBar />
-        <CardUser />
-        <CardStats />
-      </Content>
+    return (     
+        <Content>
+          <NavBar />
+          <CardUser />
+          <CardStats />
+        </Content >
     );
   }
 }

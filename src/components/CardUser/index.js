@@ -10,25 +10,25 @@ const Content = styled.div`
 const CardUser = ()=>{
 	return(
 		<Content>
-		<Card>
-		    <Image src={require('./me.jpg')} />
-		    <Card.Content>
-		      <Card.Header>
-		        Mandy
-		      </Card.Header>
-		      <Card.Meta>
-		        <span className='date'>
-		          Joined in 2017
-		        </span>
-		      </Card.Meta>
-		    </Card.Content>
-		    <Card.Content extra>
-		      <a>
-		        <Icon name='user' />
-		        22 Friends
-		      </a>
-		    </Card.Content>
-		 </Card>
+			<Card>
+					<Image src={require('./me.jpg')} />
+					<Card.Content>
+						<Card.Header>
+							Mandy
+						</Card.Header>
+						<Card.Meta>
+							<span className='date'>
+								Joined in 2017
+							</span>
+						</Card.Meta>
+					</Card.Content>
+					<Card.Content extra>
+						<a>
+							<Icon name='user' />
+							22 Friends
+						</a>
+					</Card.Content>
+			</Card>
 		 </Content>
 	);
 }

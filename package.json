@@ -1,22 +1,28 @@
 {
   "name": "workout-tracker",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "moment": "^2.22.0",
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0",
-    "react-router": "^4.2.0",
-    "react-router-dom": "^4.2.2",
-    "react-scripts": "1.1.2",
-    "semantic-ui-css": "^2.3.1",
-    "semantic-ui-react": "^0.79.0",
-    "styled-components": "^3.2.5"
-  },
+  "version": "1.0.0",
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).",
+  "main": "server.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "node server/server.js",
+    "client": "node start-client.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cremalab/workout-tracker.git"
+  },
+  "author": "Mandy Tadros",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cremalab/workout-tracker/issues"
+  },
+  "homepage": "https://github.com/cremalab/workout-tracker#readme",
+  "dependencies": {
+    "hapi": "^17.3.1",
+    "hapi-mongodb": "^7.1.0",
+    "inert": "^5.1.0",
+    "mongoose": "^5.0.13"
   }
 }

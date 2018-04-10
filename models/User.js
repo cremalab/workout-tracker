@@ -1,14 +1,17 @@
 const mongoose = require('mongoose'),
-      Schema = mongoose.Schema,
-      bcrypt = require(bycrpt),
-      SALT_WORK_FACTOR = 10;
+      Schema = mongoose.Schema;
+      //bcrypt = require('bycrpt'),
+      //SALT_WORK_FACTOR = 10;
+      
 
-const UserSchema= new Schema({
-  firstName: {
-    type: String,
-    required: true,
-    default: ''
-  }
+const UserSchema = new Schema({
+  firstName: String
+  // {
+  //   type: String,
+  //   required: true,
+  //   default: '',
+  //   index: true
+  // }
 //   lastName: {
 //     type: String,
 //     default: ''

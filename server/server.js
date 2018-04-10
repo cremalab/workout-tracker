@@ -16,6 +16,9 @@ server.start((err)=>{
 });
 
 //routes
+// const routes = require('./routes/routes');
+// server.route(routes);
+const User = require('../models/User');
 server.route({
     method: 'GET',
     path: '/',
@@ -24,12 +27,20 @@ server.route({
     }
 });
 server.route({
-    method: 'GET',
-    path: '/{name}',
-    handler: (request, h) => {
-        return 'Hello, ' + encodeURIComponent(request.params.name);
+    method: 'POST',
+    path: '/api/users/{name}',
+    handler: async(request, h) => {
+        const user = new User({
+            firstName: request.params.name
+        });
+        user.save( (err, user) => {
+            if (err) throw err;
+            return user.id;
+        });
+        return user;
     }
 });
+
 
 var connStr = 'mongodb://127.0.0.1:27017/user-login';
 mongoose.connect(connStr, function(err) {

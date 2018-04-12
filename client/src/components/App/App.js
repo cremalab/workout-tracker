@@ -17,10 +17,10 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateInput = this.validateInput.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.handleConfirmPasswordChange = this.handleConfirmPasswordChange.bind(this);
   }
 
   render() {
-
     return (
       <div>     
           Sign Up <br/>
@@ -35,11 +35,13 @@ class App extends Component {
               type="password"
               name="signUpPassword"
               placeholder="Password"
+              value={this.state.signUpPassword}
               onChange={this.handlePasswordChange}/><br/>
             <input
               type="password"
               name="signUpPasswordConfirm"
               placeholder="Confirm Password"
+              value={this.state.signUpPasswordConfirm}
               onChange={this.handleConfirmPasswordChange}/><br/>  
             <input 
               type="submit" 
@@ -51,13 +53,15 @@ class App extends Component {
   }
 
   handleChange(event){
-    this.setState({[event.target.name]: event.target.value});
-  }
-  handleConfirmPasswordChange(event){
-    confirmPassword = event.target.value;
+    this.setState({[event.target.name]: event.target.value});   
   }
   handlePasswordChange(event){
+    this.handleChange(event);
     password = event.target.value;
+  }
+  handleConfirmPasswordChange(event){
+    this.handleChange(event);
+    confirmPassword = event.target.value;
   }
   validateInput(event){
     if(password !== confirmPassword){
@@ -69,7 +73,7 @@ class App extends Component {
   }
   handleSubmit(event){
     const { signUpEmail, signUpPassword} = this.state;
-    fetch('/api/users/' + signUpEmail + '/' + password,{
+    fetch('/api/users/' + signUpEmail + '/' + signUpPassword,{
       method: 'POST',
       body: JSON.stringify({
         signUpEmail,

@@ -1,6 +1,7 @@
 'use strict';
 
 const User = require('../models/User'),
+      UserSession = require('../models/UserSession'),
       Joi = require('joi');
 
 module.exports = [
@@ -32,6 +33,26 @@ module.exports = [
                     password: Joi.string().required()
                 }
             }
+        }
+    },
+    {
+        method: 'POST',
+        path: '/api/login/',
+        handler: (request, h) => {
+            return request.payload.email
+            User.findOne({
+                $and: [
+                    {email: request.payload.email},
+                    {password: request.payload.password}
+                ]
+            }), (err, user) =>{
+                if(user){
+                    return user;
+                } else {
+                    return 'Noooo!';
+                }
+            }
+            
         }
     }
 ];

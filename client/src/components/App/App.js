@@ -73,6 +73,7 @@ class App extends Component {
   }
   handleSubmit(event){
     const { signUpEmail, signUpPassword} = this.state;
+    event.target.setCustomValidity('');
     fetch('/api/users/' + signUpEmail + '/' + signUpPassword,{
       method: 'POST',
       body: JSON.stringify({

@@ -13,25 +13,19 @@ module.exports = [
     },
     {
         method: 'POST',
-        path: '/api/users/{email}/{password}',
+        path: '/api/users/',
         handler: async(request, h) => {
+            var payload = JSON.parse(request.payload);
             const user = new User({
-                email: request.params.email,
-                password: request.params.password
+                email: payload.signUpEmail,
+                password: payload.signUpPassword
             });
+            console.log(user);
             user.save( (err, user) => {
                 if (err) throw err;
                 return user.id;
             });
-            return user;
-        },
-        options: {
-            validate: {
-                params: {
-                    email: Joi.string().required(),
-                    password: Joi.string().required()
-                }
-            }
+            return user;  
         }
     }
 ];

@@ -66,9 +66,10 @@ class App extends Component {
     }
   }
   handleSubmit = (event) => {
+    event.preventDefault();
     const { signUpEmail, signUpPassword} = this.state;
     event.target.setCustomValidity('');
-    fetch('/api/users/' + signUpEmail + '/' + signUpPassword,{
+    fetch('/api/users/',{
       method: 'POST',
       body: JSON.stringify({
         signUpEmail,
@@ -78,6 +79,7 @@ class App extends Component {
         'Accept': 'application/json, text/plain, */*',
         'Content': 'application/json'
       }
+      //mode: 'no-cors'
     }).then(response => response.json())
   }
 }

@@ -13,11 +13,6 @@ class App extends Component {
       signUpPassword:'',
       signUpPasswordConfirm:''
     }
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.validateInput = this.validateInput.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.handleConfirmPasswordChange = this.handleConfirmPasswordChange.bind(this);
   }
 
   render() {
@@ -52,26 +47,25 @@ class App extends Component {
     );
   }
 
-  handleChange(event){
+  handleChange = (event) => {
     this.setState({[event.target.name]: event.target.value});   
   }
-  handlePasswordChange(event){
+  handlePasswordChange = (event) => {
     this.handleChange(event);
     password = event.target.value;
   }
-  handleConfirmPasswordChange(event){
+  handleConfirmPasswordChange = (event) => {
     this.handleChange(event);
     confirmPassword = event.target.value;
   }
-  validateInput(event){
+  validateInput = (event) => {
     if(password !== confirmPassword){
       event.target.setCustomValidity('Passwords must match');
     } else {
-      console.log(this.state.signUpPassword)
       this.handleSubmit(event);
     }
   }
-  handleSubmit(event){
+  handleSubmit = (event) => {
     const { signUpEmail, signUpPassword} = this.state;
     event.target.setCustomValidity('');
     fetch('/api/users/' + signUpEmail + '/' + signUpPassword,{

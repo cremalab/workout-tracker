@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 let password = '',
     confirmPassword ='';
 
@@ -13,11 +14,6 @@ class App extends Component {
       signUpPassword:'',
       signUpPasswordConfirm:''
     }
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.validateInput = this.validateInput.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.handleConfirmPasswordChange = this.handleConfirmPasswordChange.bind(this);
   }
 
   render() {
@@ -48,40 +44,45 @@ class App extends Component {
               value="Submit" 
               onClick={this.validateInput}/>
           </form> 
+          <Link to="/login">Log In</Link>
       </div>
     );
   }
 
-  handleChange(event){
+  handleChange = (event) => {
     this.setState({[event.target.name]: event.target.value});   
   }
-  handlePasswordChange(event){
+  handlePasswordChange = (event) => {
     this.handleChange(event);
     password = event.target.value;
   }
-  handleConfirmPasswordChange(event){
+  handleConfirmPasswordChange = (event) => {
     this.handleChange(event);
     confirmPassword = event.target.value;
   }
-  validateInput(event){
+  validateInput = (event) => {
     if(password !== confirmPassword){
       event.target.setCustomValidity('Passwords must match');
     } else {
-      console.log(this.state.signUpPassword)
       this.handleSubmit(event);
     }
   }
-  handleSubmit(event){
+  handleSubmit = (event) => {
+    event.preventDefault();
     const { signUpEmail, signUpPassword} = this.state;
+    console.log(JSON.stringify({
+      signUpEmail,
+      signUpPassword
+    }));
     event.target.setCustomValidity('');
-    fetch('/api/users/' + signUpEmail + '/' + signUpPassword,{
+    fetch('/api/users/',{
       method: 'POST',
       body: JSON.stringify({
         signUpEmail,
         signUpPassword
       }),
       headers: {
-        'Accept': 'application/json, text/plain, */*',
+        'Accept': 'application/json, */*',
         'Content': 'application/json'
       }
     }).then(response => response.json())

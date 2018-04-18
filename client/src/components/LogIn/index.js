@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 
 class LogIn extends Component {
     constructor(props){
@@ -42,9 +41,8 @@ class LogIn extends Component {
         this.setState({[event.target.name]: event.target.value});   
       }
     handleSubmit = (event) => {
-        //event.preventDefault();
-        const { logInEmail, logInPassword} = this.state;
-        //event.target.setCustomValidity('');
+        event.preventDefault();
+        const { logInEmail, logInPassword } = this.state;
         fetch("/api/users/login",{
           method: 'POST',
           body: JSON.stringify({
@@ -52,8 +50,9 @@ class LogIn extends Component {
             logInPassword
           }),
           headers: {
-            "Accept": "application/json",
-            "Content": "application/json"
+            "Accept": "application/json, */*",
+            "Content": "application/json",
+            "Cookie": "secret32characterpassword"
           }
         }).then(response => response.json())
         .catch(err => console.log('Error: ' + err))

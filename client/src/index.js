@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import runnerImage from './assets/runner.jpg';
 import App from './components/App/App';
 import LogIn from './components/LogIn';
+import Dashboard from './components/Dashboard';
 
 
 const OuterWrapper = styled.div`
@@ -30,6 +31,7 @@ ReactDOM.render((
                 <div>
                     <Route exact path="/" component={App} />
                     <Route path="/login" component={LogIn} />
+                    <Route path="/dashboard" component={Dashboard} />
                 </div>
             </InnerWrapper>
         </OuterWrapper>

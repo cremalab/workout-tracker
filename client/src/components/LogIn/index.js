@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom';
 
 class LogIn extends Component {
     constructor(props){
@@ -8,6 +8,7 @@ class LogIn extends Component {
       this.state = {
         logInEmail: '',
         logInPassword:'',
+        auth: ''
       }
     }
   
@@ -39,7 +40,8 @@ class LogIn extends Component {
 
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value});   
-      }
+    }
+
     handleSubmit = (event) => {
         event.preventDefault();
         const { logInEmail, logInPassword } = this.state;
@@ -54,10 +56,16 @@ class LogIn extends Component {
             "Content": "application/json",
             "Cookie": "secret32characterpassword"
           }
-        }).then(response => response.json())
+        }).then(response => {response.json(); console.log(response)})
+        // .then(<Redirect to={{
+        //   pathname: "/login",
+        // }}/>)
         .catch(err => console.log('Error: ' + err))
-        .then(response => console.log('Response: ' + response));
-      }
+    }
+
+    handleLogin = () => {
+
+    }
 }
 
 export default LogIn;

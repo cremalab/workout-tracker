@@ -77,7 +77,7 @@ module.exports = [
                     // console.log(payload.logInEmail);
                     // return request.payload;
                 });
-                return h.redirect('/dashboard');
+                return request.auth.isAuthenticated;
                 //h.redirect('http://localhost:3000/' + redirectRoute);
              }
         }

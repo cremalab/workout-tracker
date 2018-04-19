@@ -49,13 +49,10 @@ class App extends Component {
   }
 
   handleSubmit = (event) => {
-    console.log(this.state.signUpPassword);
-    console.log(this.state.signUpPasswordConfirm);
-    if(this.state.signUpPassword !== this.state.signUpPasswordConfirm){
+    const { signUpEmail, signUpPassword, signUpPasswordConfirm } = this.state;
+    if(signUpPassword !== signUpPasswordConfirm){
       event.target.setCustomValidity('Passwords must match');
     } else {
-      event.target.setCustomValidity('');
-      const { signUpEmail, signUpPassword} = this.state;
       event.target.setCustomValidity('');
       fetch('/api/users/',{
         method: 'POST',

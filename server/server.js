@@ -5,7 +5,6 @@ const Hapi = require('hapi'),
       User = require('../models/User'),
       Path = require('path'),
       HapiAuthCookie = require('hapi-auth-cookie'),
-      Vision = require('vision'),
       React = require('react');
 
 const server = Hapi.server({    
@@ -22,19 +21,30 @@ const start = async () => {
 
     await server.register(HapiAuthCookie);
 
-    const cache = server.cache({ segment: 'sessions', expiresIn: 3 * 24 * 60 * 60 * 1000 });
-    server.app.cache = cache;
+    // hapi-auth-cookie validation. Will try to implement later
+    // const validate = async (request, session) => {
+    //     let payload = JSON.parse(request.payload);
+    //     User.authenticate()(payload.logInEmail, payload.logInPassword, (err, user) => {
+    //         if(err) console.log('Error: ' + err);
+    //         if(!user) {
+    //             console.log("not a user!");
+    //         }
+    //         console.log('user!');
+    //         return {
+    //             valid: true, 
+    //             credentials: {
+                    
+    //             }};
+    //         request.cookieAuth.set({ loggedIn: true, loggedInUser: payload.logInEmail });
+    //     });
+    // };
 
-    server.auth.strategy('restricted', 'cookie', {
+    server.auth.strategy('session', 'cookie', {
         password: 'Td2sXhE4Eghk8MBA3X96hgMqd66k8r2P',
-        cookie: 'sid-example',
         isSecure: false,
-        redirectTo: false,
-        redirectOnTry: false,
-        //validateFunc: 
+        //validateFunc: validate
     });
-
-    server.auth.default({strategy: 'restricted', mode: 'optional'});
+    server.auth.default({ strategy: 'session', mode: 'optional'});
 
     const routes = require('./routes');
     server.route(routes);

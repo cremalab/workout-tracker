@@ -4,16 +4,7 @@ const User = require('../models/User'),
       Joi = require('joi'),
       HapiAuthCookie = require('hapi-auth-cookie');
 
-let uuid = 1; //just for example
-
 module.exports = [
-    {
-        method: 'GET',
-        path: '/',
-        handler: (request, h) => {
-            return 'Users coming soon';
-        }
-    },
     {
         method: 'POST',
         path: '/api/users/',
@@ -38,48 +29,23 @@ module.exports = [
         method: 'POST',
         path: '/api/users/login',
         options: {
-             plugins: { 
-                'hapi-auth-cookie': { 
-                    redirectTo: false
-                } 
-            },
-            auth: {
-                strategy: 'restricted',
-                mode: 'try'
-            },  
             handler: async (request, h) => {
-                //trying to use passport-local-mongoose for auth and hapi-auth-cookie for cookie
+                //Using passport-local-mongoose for auth. Will add hapi-auth-cookie later
                 let payload = JSON.parse(request.payload);
                 User.authenticate()(payload.logInEmail, payload.logInPassword, (err, user) => {
-                    let redirectRoute = '';
                     if(err) console.log('Error: ' + err);
                     if(!user) {
-                        console.log(request);
+                        console.log(request.auth.isAuthenticated);
                         console.log("not a user!");
-                        return redirectRoute = 'login';
-                        return h.redirect('/login');
+                        return 'not successful';
                     }
+                    //request.cookieAuth.set({ loggedIn: true, loggedInUser: payload.logInEmail });
+                    //h.authenticate({credentials: payload.logInEmail})
                     console.log('user!');
-                    request.auth.isAuthenticated = true;
-                    //const sid = String(++uuid);
-                    //request.server.app.cache.set(sid, { user }, 0);
-                    //console.log(request.server.app);
-                    request.cookieAuth.set({ loggedIn: true, loggedInUser: payload.logInEmail });
-                    //console.log(request.auth);
-                    redirectRoute = 'dashboard';
-                    return h.redirect('/dashboard')
-                
-                    //trying to use hapi-auth-cookie
-                    //const { logInEmail, logInPassword } = request.payload;
-                    // var payload = JSON.parse(request.payload);
-                    // const user = User[payload.logInEmail];
-                    // console.log(user);
-                    // console.log(payload.logInEmail);
-                    // return request.payload;
+                    return 'successful';
                 });
                 return request.auth.isAuthenticated;
-                //h.redirect('http://localhost:3000/' + redirectRoute);
-             }
-        }
+            }
+       }
     }
 ];

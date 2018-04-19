@@ -70,10 +70,6 @@ class App extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     const { signUpEmail, signUpPassword} = this.state;
-    console.log(JSON.stringify({
-      signUpEmail,
-      signUpPassword
-    }));
     event.target.setCustomValidity('');
     fetch('/api/users/',{
       method: 'POST',

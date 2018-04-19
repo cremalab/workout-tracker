@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 class LogIn extends Component {
     constructor(props){
@@ -8,11 +8,13 @@ class LogIn extends Component {
       this.state = {
         logInEmail: '',
         logInPassword:'',
-        auth: ''
+        authenticated: false
       }
     }
-  
     render() {
+      if(this.state.authenticated === true){
+        return <Redirect to='/dashboard' />
+      }
       return (
         <div>     
             Log In <br/>
@@ -41,9 +43,7 @@ class LogIn extends Component {
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value});   
     }
-
     handleSubmit = (event) => {
-        event.preventDefault();
         const { logInEmail, logInPassword } = this.state;
         fetch("/api/users/login",{
           method: 'POST',
@@ -52,19 +52,21 @@ class LogIn extends Component {
             logInPassword
           }),
           headers: {
-            "Accept": "application/json, */*",
-            "Content": "application/json",
-            "Cookie": "secret32characterpassword"
+            'Accept': 'application/json, */*',
+            'Content': 'application/json',
           }
-        }).then(response => {response.json(); console.log(response)})
-        // .then(<Redirect to={{
-        //   pathname: "/login",
-        // }}/>)
+        }).then(response => {
+          response.json(); 
+          console.log(response);
+          if(response.status === 200){
+            this.handleSuccessfulLogin()
+          }
+        })
         .catch(err => console.log('Error: ' + err))
+        event.preventDefault();
     }
-
-    handleLogin = () => {
-
+    handleSuccessfulLogin = () => {
+      this.setState({ authenticated: true});
     }
 }
 

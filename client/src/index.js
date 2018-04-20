@@ -7,7 +7,6 @@ import './index.css';
 import styled from 'styled-components';
 import runnerImage from './assets/runner.jpg';
 import App from './components/App/App';
-import NavBar from './components/NavBar';
 
 
 const OuterWrapper = styled.div`
@@ -26,7 +25,6 @@ const InnerWrapper = styled.div`
 ReactDOM.render((
     <Router>
         <OuterWrapper>
-        <NavBar/>
             <InnerWrapper>
                 <div>
                     <Route exact path="/" component={App} />

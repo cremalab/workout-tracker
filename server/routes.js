@@ -30,21 +30,25 @@ module.exports = [
         path: '/api/users/login',
         options: {
             handler: async (request, h) => {
-                //Using passport-local-mongoose for auth. Will add hapi-auth-cookie later
+                //Using passport-local-mongoose for auth
                 let payload = JSON.parse(request.payload);
-                User.authenticate()(payload.logInEmail, payload.logInPassword, (err, user) => {
-                    if(err) console.log('Error: ' + err);
-                    if(!user) {
-                        console.log(request.auth.isAuthenticated);
-                        console.log("not a user!");
-                        return 'not successful';
-                    }
-                    //request.cookieAuth.set({ loggedIn: true, loggedInUser: payload.logInEmail });
-                    //h.authenticate({credentials: payload.logInEmail})
-                    console.log('user!');
-                    return 'successful';
-                });
-                return request.auth.isAuthenticated;
+                try {
+                    let user = await User.authenticate()(payload.logInEmail, payload.logInPassword);
+                    console.log('user!', user);
+                    return request.auth.isAuthenticated;
+                } catch(err) {
+                    console.log('not au user!');
+                    console.log('Error: ' + err);
+                    return h.response().code(401);
+                }  
+                // await User.findOne({email: payload.signUpEmail}, (err, docs) => {
+                //     if (err) console.log(err);
+                //     console.log('user')
+                //     //if(user) ;
+                //     return payload.signUpEmail;
+                // })
+                // console.log('not a user');
+                return payload;
             }
        }
     }

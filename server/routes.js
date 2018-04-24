@@ -2,7 +2,8 @@
 
 const User = require('../models/User'),
       Joi = require('joi'),
-      HapiAuthCookie = require('hapi-auth-cookie');
+      HapiAuthCookie = require('hapi-auth-cookie'),
+      _ = require('lodash');
 
 module.exports = [
     {
@@ -33,13 +34,17 @@ module.exports = [
                 //Using passport-local-mongoose for auth
                 let payload = JSON.parse(request.payload);
                 try {
-                    let user = await User.authenticate()(payload.logInEmail, payload.logInPassword);
-                    console.log('user!', user);
-                    return request.auth.isAuthenticated;
+                    let { user, ...result } = await User.authenticate()(payload.logInEmail, payload.logInPassword);
+
+                    if (result.error) {
+                        return h.response({}).code(401);
+                    }
+
+                    return { email: user.email, _id: user._id };
+                
                 } catch(err) {
-                    console.log('not au user!');
                     console.log('Error: ' + err);
-                    return h.response().code(401);
+                    return h.response({}).code(401);
                 }  
                 // await User.findOne({email: payload.signUpEmail}, (err, docs) => {
                 //     if (err) console.log(err);
@@ -48,7 +53,7 @@ module.exports = [
                 //     return payload.signUpEmail;
                 // })
                 // console.log('not a user');
-                return payload;
+                return user;
             }
        }
     }

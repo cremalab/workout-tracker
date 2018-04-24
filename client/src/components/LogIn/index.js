@@ -56,7 +56,6 @@ class LogIn extends Component {
             'Content': 'application/json',
           }
         }).then(response => {
-          response.json(); 
           console.log(response);
           if(response.status === 200){
             this.handleSuccessfulLogin()

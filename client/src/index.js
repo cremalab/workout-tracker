@@ -7,7 +7,7 @@ import './index.css';
 import styled from 'styled-components';
 import runnerImage from './assets/runner.jpg';
 import App from './components/App/App';
-
+import Calendar from './components/Calendar';
 
 const OuterWrapper = styled.div`
     height: 100vh;
@@ -28,6 +28,7 @@ ReactDOM.render((
             <InnerWrapper>
                 <div>
                     <Route exact path="/" component={App} />
+                    <Route path="/calendar" component={Calendar} />
                 </div>
             </InnerWrapper>
         </OuterWrapper>

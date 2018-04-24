@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import './App.css';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-let password = '',
-    confirmPassword ='';
-
 
 class App extends Component {
   constructor(props){
@@ -32,17 +29,17 @@ class App extends Component {
               name="signUpPassword"
               placeholder="Password"
               value={this.state.signUpPassword}
-              onChange={this.handlePasswordChange}/><br/>
+              onChange={this.handleChange}/><br/>
             <input
               type="password"
               name="signUpPasswordConfirm"
               placeholder="Confirm Password"
               value={this.state.signUpPasswordConfirm}
-              onChange={this.handleConfirmPasswordChange}/><br/>  
+              onChange={this.handleChange}/><br/>  
             <input 
               type="submit" 
               value="Submit" 
-              onClick={this.validateInput}/>
+              onClick={this.handleSubmit}/>
           </form> 
           <Link to="/login">Log In</Link>
       </div>
@@ -50,38 +47,27 @@ class App extends Component {
   }
 
   handleChange = (event) => {
-    this.setState({[event.target.name]: event.target.value});   
+    this.setState({[event.target.name]: event.target.value});
   }
-  handlePasswordChange = (event) => {
-    this.handleChange(event);
-    password = event.target.value;
-  }
-  handleConfirmPasswordChange = (event) => {
-    this.handleChange(event);
-    confirmPassword = event.target.value;
-  }
-  validateInput = (event) => {
-    if(password !== confirmPassword){
+
+  handleSubmit = (event) => {
+    const { signUpEmail, signUpPassword, signUpPasswordConfirm } = this.state;
+    if(signUpPassword !== signUpPasswordConfirm){
       event.target.setCustomValidity('Passwords must match');
     } else {
-      this.handleSubmit(event);
+      event.target.setCustomValidity('');
+      fetch('/api/users/',{
+        method: 'POST',
+        body: JSON.stringify({
+          signUpEmail,
+          signUpPassword
+        }),
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content': 'application/json'
+        }
+      }).then(response => response.json())
     }
-  }
-  handleSubmit = (event) => {
-    event.preventDefault();
-    const { signUpEmail, signUpPassword} = this.state;
-    event.target.setCustomValidity('');
-    fetch('/api/users/',{
-      method: 'POST',
-      body: JSON.stringify({
-        signUpEmail,
-        signUpPassword
-      }),
-      headers: {
-        'Accept': 'application/json, */*',
-        'Content': 'application/json'
-      }
-    }).then(response => response.json())
   }
 }
 export default App;

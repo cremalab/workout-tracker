@@ -9,21 +9,20 @@ class Calendar extends Component {
     constructor(props){
         super(props);
         this.state={
-            startOfMonth: moment().clone().startOf('month').format("ddd").toString(),
-            endOfMonth: moment().clone().endOf('month').format("ddd").toString(),
-            startDay: '',
+            month: moment().month(),
+            year: moment().year(),        
         }
     }
-    componentDidMount(){
-        this.getStartDay();
-    }
+    // componentDidMount(){
+    //     this.getStartDay();
+    // }
 
-    getStartDay = () => {
-        console.log(this.state.startOfMonth);
-        if(this.state.startOfMonth === "Sun"){
-           this.setState({startDay: 0})
-        }
-    }
+    // getStartDay = () => {
+    //     console.log(this.state.startOfMonth);
+    //     if(this.state.startOfMonth === "Sun"){
+    //        this.setState({startDay: 0})
+    //     }
+    // }
 
     // getCalendar(){
     //     let startDate = moment().format(),
@@ -32,10 +31,41 @@ class Calendar extends Component {
     //        // monthRange = moment.range(firstDate, lastDate);
     // }
 
+    previousMonth = ()=>{
+        let month, year;
+        if(this.state.month === 0){
+            month = 11;
+            year = this.state.year - 1;
+        } else {
+            month = this.state.month - 1
+            year = this.state.year;
+        }
+        this.setState({
+            month,
+            year
+        });
+        console.log('this.state.month: ' + this.state.month);
+    }
+    nextMonth = ()=>{
+        let month, year;
+        if (this.state.month == 11){
+        	month = 0;
+            year = this.state.year + 1;
+        }
+        else{
+        	month = this.state.month + 1;
+            year = this.state.year;
+        }
+        this.setState({
+        	month,
+            year
+        });
+    }
+
     render(){
         let daysOfWeek = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"],
-            year = 2017,
-            month = 8,
+            year = this.state.year,
+            month = this.state.month,
             startDate = moment([year, month]),
             firstOfMonth = moment(startDate).clone().startOf('month'),
             firstOfMonthDate = firstOfMonth.date(),
@@ -52,8 +82,6 @@ class Calendar extends Component {
                 currentWeek = firstOfMonth.clone().day(firstOfMonthDay),
                 currentDay = parseInt(currentWeek.format('D'));
                 console.log('firstOfMONTH TOP: ' + firstOfMonth.toString());
-                console.log('currentWEEK TOP: ' + currentWeek.toString());
-                console.log('LASTOF MONTH date TOP: ' + lastOfMonthDate);
                 console.log('weeksInMonth: ' + weeksInMonth);
             while(currentWeek < lastOfMonth){
                 //add blank days to first week
@@ -68,7 +96,6 @@ class Calendar extends Component {
                 if(currentDay === 1){//if first week of month 
                     daysToAdd = 8 - week.length;
                 } else if (weeks.length >= weeksInMonth){//if last week of month
-                    console.log(lastOfMonthDay);
                     if(lastOfMonthDay === 0){ //if month ends on Sunday
                         daysToAdd = currentDay + (lastOfMonthDate - currentDay) + 1;
                         console.log('EQUAL','lastOfMonthDate' + lastOfMonthDate ,'currDay: '+ currentDay,'daystoADD: ' +daysToAdd);
@@ -83,44 +110,37 @@ class Calendar extends Component {
                 for(var i = currentDay; i < daysToAdd; i++){
                     week.push(i); 
                 }
-                //console.log('week after week.push(i): ' + week);
 
                 //determine how to increment currentDay and currentWeek
                 if(currentDay === 1){
                     currentDay = currentDay + (7- firstOfMonthDay);
-                    //console.log('currentDay FIRST WEEK INC: ' + currentDay);
                     currentWeek.add(7, 'day');
                 } else if ((weeks.length + 1) >= weeksInMonth){ //if last week of month
                     currentDay = currentDay + 7;
-                    //console.log('currentDay LAST WEEK: ' + currentDay);
-                    if(lastOfMonthDay === 6){ //if month ends on a Saturday
+                    if(lastOfMonthDay === 6){ //if month ends on Saturday
                         currentWeek.add( 6 , 'day');
-                    } 
-                    else if(lastOfMonthDay === 0){ //if month ends on a Sunday
-                        //console.log('currentWEEK LAST WEEK INC: ' + currentWeek.toString());
+                    } else if (lastOfMonthDay === 0){ //if month ends on Sunday
                         currentWeek.add( 1 , 'day');
-                        //console.log('currentWEEK LAST WEEK INC AFT: ' + currentWeek.toString());
-                    } 
-                    else {
+                    } else if (lastOfMonthDay === 1){ //if month ends on Monday
+                        currentWeek.add( 2 , 'day');
+                    } else {
                         currentWeek.add((6 - lastOfMonthDay), 'day');
                     }
                 } else {
                     currentDay = currentDay + 7;
-                    //console.log('currentDay MID WEEK INC: ' + currentDay);
-                    //console.log('currentWEEK MID MONTH: ' + currentWeek.toString());
                     currentWeek.add(7, 'day');
-                    //console.log('currentWEEK MID MONTH INC AFT: ' + currentWeek.toString());
                 }
                 weeks.push([week]); 
-                //console.log('weeks.length: ' + weeks.length);
                 week = [];
             }
-            console.log('weeks:' + weeks);
         }
         
         return(
             <div>
-                <Icon name="arrow left"  />
+                <Icon name="arrow left"  onClick={this.previousMonth}/>
+                <Icon name="arrow right"  onClick={this.nextMonth}/>
+                <p> Month: {this.state.month + 1} </p>
+                <p> Year: {this.state.year} </p>
                 <Table celled inverted>
                     <Table.Header>
                     <Table.Row>
@@ -146,14 +166,6 @@ class Calendar extends Component {
             </div>
         );
     }
-
-    // previous = ()=>{
-    //     this.setState({month: Moment().subtract(1,"month").format("MM")});
-    //     console.log(this.state.month);
-    // }
-    // next = ()=>{
-
-    // }
 }
 
 export default Calendar;

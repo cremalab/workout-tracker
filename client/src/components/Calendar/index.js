@@ -34,45 +34,90 @@ class Calendar extends Component {
 
     render(){
         let daysOfWeek = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"],
-            year = 2018,
-            month = 3,
+            year = 2017,
+            month = 8,
             startDate = moment([year, month]),
             firstOfMonth = moment(startDate).clone().startOf('month'),
             firstOfMonthDate = firstOfMonth.date(),
             firstOfMonthDay = firstOfMonth.day(),
             lastOfMonth = moment(startDate).clone().endOf('month'),
             lastOfMonthDate = lastOfMonth.date(),
-            currentWeek = firstOfMonth.clone().day(0),
-            currentDay = currentWeek.format('DD'),
+            lastOfMonthDay = lastOfMonth.day(),
             daysInMonth = moment([year, month]).daysInMonth(),
-            //monthRange = moment.range(firstOfMonth, lastOfMonth),
+            weeksInMonth = Math.floor((firstOfMonthDay + daysInMonth)/7),
             weeks = [];
-
-        var week = [],
-            x=0;
-        {
-            while ( x < 1){
+            
+        {   let week = [],
+                daysToAdd,
+                currentWeek = firstOfMonth.clone().day(firstOfMonthDay),
+                currentDay = parseInt(currentWeek.format('D'));
+                console.log('firstOfMONTH TOP: ' + firstOfMonth.toString());
+                console.log('currentWEEK TOP: ' + currentWeek.toString());
+                console.log('LASTOF MONTH date TOP: ' + lastOfMonthDate);
+                console.log('weeksInMonth: ' + weeksInMonth);
+            while(currentWeek < lastOfMonth){
                 //add blank days to first week
-                //use currentWeek here then increment it at the end? http://jsfiddle.net/timrwood/XEqBE/
-                if(currentDay === '01'){ //only loop here if 1st of month is in that week
+                if(currentDay === 1){
                     for(var i = 0; i < firstOfMonthDay; i++){
-                        var blank = '';
+                        let blank = '';     
                         week.push(blank);
                     }
                 }
-                //add rest of days after blanks
-                var daysToAdd = 7 - week.length;
-                for(var i = 1; i <= daysToAdd; i++){
-                    week.push(i);
+
+                //determine how many days to add after any necessary blanks have been added
+                if(currentDay === 1){//if first week of month 
+                    daysToAdd = 8 - week.length;
+                } else if (weeks.length >= weeksInMonth){//if last week of month
+                    console.log(lastOfMonthDay);
+                    if(lastOfMonthDay === 0){ //if month ends on Sunday
+                        daysToAdd = currentDay + (lastOfMonthDate - currentDay) + 1;
+                        console.log('EQUAL','lastOfMonthDate' + lastOfMonthDate ,'currDay: '+ currentDay,'daystoADD: ' +daysToAdd);
+                    } else {
+                        daysToAdd = currentDay + (lastOfMonthDate - currentDay) + 1;
+                    }
+                } else {
+                    daysToAdd = currentDay + 7;
                 }
-                //for(var j= 0; j < 3; j++){
-                    weeks.push(week);     
-               // }
-             x++;
+
+                //add remaining days after blanks
+                for(var i = currentDay; i < daysToAdd; i++){
+                    week.push(i); 
+                }
+                //console.log('week after week.push(i): ' + week);
+
+                //determine how to increment currentDay and currentWeek
+                if(currentDay === 1){
+                    currentDay = currentDay + (7- firstOfMonthDay);
+                    //console.log('currentDay FIRST WEEK INC: ' + currentDay);
+                    currentWeek.add(7, 'day');
+                } else if ((weeks.length + 1) >= weeksInMonth){ //if last week of month
+                    currentDay = currentDay + 7;
+                    //console.log('currentDay LAST WEEK: ' + currentDay);
+                    if(lastOfMonthDay === 6){ //if month ends on a Saturday
+                        currentWeek.add( 6 , 'day');
+                    } 
+                    else if(lastOfMonthDay === 0){ //if month ends on a Sunday
+                        //console.log('currentWEEK LAST WEEK INC: ' + currentWeek.toString());
+                        currentWeek.add( 1 , 'day');
+                        //console.log('currentWEEK LAST WEEK INC AFT: ' + currentWeek.toString());
+                    } 
+                    else {
+                        currentWeek.add((6 - lastOfMonthDay), 'day');
+                    }
+                } else {
+                    currentDay = currentDay + 7;
+                    //console.log('currentDay MID WEEK INC: ' + currentDay);
+                    //console.log('currentWEEK MID MONTH: ' + currentWeek.toString());
+                    currentWeek.add(7, 'day');
+                    //console.log('currentWEEK MID MONTH INC AFT: ' + currentWeek.toString());
+                }
+                weeks.push([week]); 
+                //console.log('weeks.length: ' + weeks.length);
+                week = [];
             }
+            console.log('weeks:' + weeks);
         }
         
-
         return(
             <div>
                 <Icon name="arrow left"  />
@@ -85,27 +130,17 @@ class Calendar extends Component {
                     </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                    <Table.Row>
-                        <Table.Cell>{this.state.startOfMonth}</Table.Cell>
-                        <Table.Cell>{this.state.endOfMonth}</Table.Cell>
-                        <Table.Cell>{moment().week()}</Table.Cell>
-                        <Table.Cell>{firstOfMonthDay.toString()}</Table.Cell>
-                        <Table.Cell>{moment().startOf('week').format("DD").toString()}</Table.Cell>
-                        <Table.Cell>{daysInMonth.toString()}</Table.Cell>
-                        <Table.Cell>{currentWeek.toString()}</Table.Cell>
-                    </Table.Row>
-                    {weeks.map((subweek) => {
+                    {weeks.map(([subweek]) => {
                         return (
                             <Table.Row>
-                                {week.map((day) => {
-                                    return (
+                                {subweek.map((day) => {
+                                    return(
                                         <Table.Cell>{day}</Table.Cell>
-                                    )
+                                    );
                                 })}
                             </Table.Row>
                         );
                     })}
-                   
                     </Table.Body>
                 </Table>
             </div>

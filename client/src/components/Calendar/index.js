@@ -1,9 +1,35 @@
 import React, { Component } from 'react';
-import {Icon, TableHeaderCell, Table } from 'semantic-ui-react';
+import {Icon, TableHeaderCell, Table, Header, Segment } from 'semantic-ui-react';
+import styled from 'styled-components';
 import Moment from 'moment';
 import {extendMoment} from 'moment-range';
-
 const moment = extendMoment(Moment);
+
+const HeaderWrapper = styled.div`
+    height: 80px;
+    width: 95%;
+    margin: 20px;
+    overflow: hidden;
+    background: linear-gradient(
+        rgba(192,192,192,.9),
+        rgba(192,192,192,.9)
+      );
+`;
+
+const HeaderArrow = {
+    color: "#FA8072", 
+    paddingTop: "5%"
+};
+
+const Title = styled.span`
+    position: absolute;
+    font-family: Helvetica;
+    font-size: 3em;
+    color: #FA8072;
+    text-align: center;
+    margin-left: 30%;
+    margin-top: 5%;
+`;
 
 class Calendar extends Component {
     constructor(props){
@@ -13,23 +39,6 @@ class Calendar extends Component {
             year: moment().year(),        
         }
     }
-    // componentDidMount(){
-    //     this.getStartDay();
-    // }
-
-    // getStartDay = () => {
-    //     console.log(this.state.startOfMonth);
-    //     if(this.state.startOfMonth === "Sun"){
-    //        this.setState({startDay: 0})
-    //     }
-    // }
-
-    // getCalendar(){
-    //     let startDate = moment().format(),
-    //         firstDate = moment().startOf('month'),
-    //         lastDate = moment().endOf('month');
-    //        // monthRange = moment.range(firstDate, lastDate);
-    // }
 
     previousMonth = ()=>{
         let month, year;
@@ -137,11 +146,18 @@ class Calendar extends Component {
         
         return(
             <div>
-                <Icon name="arrow left"  onClick={this.previousMonth}/>
-                <Icon name="arrow right"  onClick={this.nextMonth}/>
-                <p> Month: {this.state.month + 1} </p>
-                <p> Year: {this.state.year} </p>
-                <Table celled inverted>
+                <HeaderWrapper>
+                    <Header floated='left' style={HeaderArrow}>
+                        <Icon name="arrow left" size="big" onClick={this.previousMonth}/>
+                    </Header>
+                    <Title>
+                      {this.state.month + 1}/{this.state.year}
+                    </Title>
+                    <Header floated='right' style={HeaderArrow}>
+                     <Icon name="arrow right" size="big" onClick={this.nextMonth}/>
+                    </Header>
+                </HeaderWrapper>
+                <Table celled unstackable>
                     <Table.Header>
                     <Table.Row>
                         {daysOfWeek.map((dayName)=>{

@@ -8,13 +8,13 @@ class LogIn extends Component {
       this.state = {
         logInEmail: '',
         logInPassword:'',
-        authenticated: false
+        authenticated: ''
       }
     }
     render() {
       if(this.state.authenticated === true){
         return <Redirect to='/dashboard' />
-      }
+      } 
       return (
         <div>     
             Log In <br/>
@@ -59,6 +59,8 @@ class LogIn extends Component {
           console.log(response);
           if(response.status === 200){
             this.handleSuccessfulLogin()
+          } else {
+            this.handleUnsuccessfulLogin()
           }
         })
         .catch(err => console.log('Error: ' + err))
@@ -66,6 +68,10 @@ class LogIn extends Component {
     }
     handleSuccessfulLogin = () => {
       this.setState({ authenticated: true});
+    }
+    handleUnsuccessfulLogin = () => {
+      this.setState({ authenticated: false});
+      return window.alert('Incorrect username or password');
     }
 }
 

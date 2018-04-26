@@ -17,10 +17,6 @@ const HeaderArrow = {
     paddingTop: "5%"
 };
 
-const HeaderArrowLeft = {
-    paddingLeft: "5%"
-}
-
 const Title = styled.span`
     position: absolute;
     font-family: Helvetica;

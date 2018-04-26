@@ -8,12 +8,8 @@ const moment = extendMoment(Moment);
 const HeaderWrapper = styled.div`
     height: 80px;
     width: 95%;
-    margin: 20px;
+    margin: 3%;
     overflow: hidden;
-    background: linear-gradient(
-        rgba(192,192,192,.9),
-        rgba(192,192,192,.9)
-      );
 `;
 
 const HeaderArrow = {
@@ -21,14 +17,20 @@ const HeaderArrow = {
     paddingTop: "5%"
 };
 
+const HeaderArrowLeft = {
+    paddingLeft: "5%"
+}
+
 const Title = styled.span`
     position: absolute;
     font-family: Helvetica;
     font-size: 3em;
     color: #FA8072;
     text-align: center;
-    margin-left: 30%;
+    margin-left: 20%;
     margin-top: 5%;
+    font-weight: bold;
+    text-transform: uppercase;
 `;
 
 class Calendar extends Component {
@@ -41,34 +43,33 @@ class Calendar extends Component {
     }
 
     previousMonth = ()=>{
-        let month, year;
         if(this.state.month === 0){
-            month = 11;
-            year = this.state.year - 1;
+            this.setState({
+                month: 11,
+                year: this.state.year-1
+            });
         } else {
-            month = this.state.month - 1
-            year = this.state.year;
+            this.setState({
+                month: this.state.month - 1,
+                year: this.state.year
+            });
         }
-        this.setState({
-            month,
-            year
-        });
         console.log('this.state.month: ' + this.state.month);
     }
     nextMonth = ()=>{
         let month, year;
-        if (this.state.month == 11){
-        	month = 0;
-            year = this.state.year + 1;
+        if (this.state.month === 11){
+            this.setState({
+                month: 0,
+                year: this.state.year + 1
+            });
         }
         else{
-        	month = this.state.month + 1;
-            year = this.state.year;
+            this.setState({
+                month: this.state.month + 1,
+                year: this.state.year
+            });
         }
-        this.setState({
-        	month,
-            year
-        });
     }
 
     render(){
@@ -151,7 +152,7 @@ class Calendar extends Component {
                         <Icon name="arrow left" size="big" onClick={this.previousMonth}/>
                     </Header>
                     <Title>
-                      {this.state.month + 1}/{this.state.year}
+                      {moment().clone().month(this.state.month).format("MMMM").toString()} {this.state.year}
                     </Title>
                     <Header floated='right' style={HeaderArrow}>
                      <Icon name="arrow right" size="big" onClick={this.nextMonth}/>

@@ -6,12 +6,16 @@ import 'semantic-ui-css/semantic.min.css';
 import './index.css';
 import styled from 'styled-components';
 import runnerImage from './assets/runner.jpg';
+import plateImage from './assets/plate.jpg';
 import App from './components/App/App';
 import Calendar from './components/Calendar';
 
 const OuterWrapper = styled.div`
     height: 100vh;
-    background: url(${runnerImage});
+    background: linear-gradient(
+        rgba(192,192,192,.2),
+        rgba(192,192,192,.2)
+      ), url(${plateImage});
     background-size: cover;
     background-attachment: fixed;
     background-repeat: no-repeat;
@@ -19,7 +23,7 @@ const OuterWrapper = styled.div`
 `;
 
 const InnerWrapper = styled.div`
-    margin: 10px;
+    margin: 10%;
 `;
 
 ReactDOM.render((

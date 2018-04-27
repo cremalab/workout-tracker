@@ -7,7 +7,7 @@ import './index.css';
 import styled from 'styled-components';
 import runnerImage from './assets/runner.jpg';
 import App from './components/App/App';
-import WorkoutModal from './components/WorkoutModal';
+import ModalWorkout from './components/ModalWorkout';
 
 const OuterWrapper = styled.div`
     height: 100vh;
@@ -28,7 +28,7 @@ ReactDOM.render((
             <InnerWrapper>
                 <div>
                     <Route exact path="/" component={App} />
-                    <Route path="/workout" component={WorkoutModal} />
+                    <Route path="/workout" component={ModalWorkout} />
                 </div>
             </InnerWrapper>
         </OuterWrapper>

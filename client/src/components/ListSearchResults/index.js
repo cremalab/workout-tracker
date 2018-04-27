@@ -1,8 +1,8 @@
 import React from 'react'
-import ResultListItem from '../ResultListItem'
+import ListItemSearchResult from '../ListItemSearchResult'
 import { Table, Icon } from 'semantic-ui-react'
 
-const ResultList = (props) => {
+const ListSearchResults = (props) => {
     // const resultItems = props.results.map((result) => {
     //     return <ResultListItem result={result} />
     // });
@@ -34,4 +34,4 @@ const ResultList = (props) => {
     )
 }
   
-  export default ResultList;
+  export default ListSearchResults

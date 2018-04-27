@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Checkbox, Form, Input, Radio, Select, TextArea, Search, Grid, Header } from 'semantic-ui-react'
-import WorkoutSearch from '../WorkoutSearch'
-import ResultList from '../ResultList'
+import SearchWorkout from '../SearchWorkout'
+import ListSearchResults from '../ListSearchResults'
 
 const options = [
   { key: 'cardio', text: 'Cardio', value: 'cardio' },
@@ -9,7 +9,7 @@ const options = [
   { key: 'crossfit', text: 'Crossfit', value: 'crossfit' }
 ]
 
-class WorkoutForm extends Component {
+class FormWorkout extends Component {
   state = {}
 
   handleChange = (e, { value }) => this.setState({ value })
@@ -19,15 +19,15 @@ class WorkoutForm extends Component {
     return (
       <Form>
         <Form.Group widths='equal'>
-            <WorkoutSearch />
+            <SearchWorkout />
         </Form.Group>
         <Form.Group inline>
-          <ResultList />
+          <ListSearchResults />
         </Form.Group>
-        <Form.Field control={Button}>Submit</Form.Field>
+        <Form.Field control={Button}>Save</Form.Field>
       </Form>
     )
   }
 }
 
-export default WorkoutForm
+export default FormWorkout

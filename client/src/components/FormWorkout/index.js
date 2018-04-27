@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Checkbox, Form, Input, Radio, Select, TextArea, Search, Grid, Header } from 'semantic-ui-react'
-import SearchWorkout from '../SearchWorkout'
+import SearchBar from '../SearchBar'
 import ListSearchResults from '../ListSearchResults'
 
 const options = [
@@ -19,7 +19,7 @@ class FormWorkout extends Component {
     return (
       <Form>
         <Form.Group widths='equal'>
-            <SearchWorkout />
+            <SearchBar />
         </Form.Group>
         <Form.Group inline>
           <ListSearchResults />

@@ -3,7 +3,7 @@ import { Search, Grid } from 'semantic-ui-react'
 
 const API_KEY = '541ec4c0a5c05e8f0ca36040e19f72c583c923fe'
 
-class SearchWorkout extends Component {
+class SearchBar extends Component {
   render() {
     return (
       <Grid>
@@ -15,4 +15,4 @@ class SearchWorkout extends Component {
   }
 }
 
-export default SearchWorkout
+export default SearchBar

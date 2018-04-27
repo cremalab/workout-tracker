@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Header, Image, Modal, Checkbox, Form, Input, Radio, Select, TextArea } from 'semantic-ui-react'
+import { Button, Header, Modal } from 'semantic-ui-react'
 import styled from 'styled-components'
 import FormWorkout from '../FormWorkout'
 

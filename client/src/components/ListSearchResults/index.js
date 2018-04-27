@@ -12,7 +12,7 @@ const ListSearchResults = (props) => {
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>Movement</Table.HeaderCell>
-            <Table.HeaderCell>Add</Table.HeaderCell>
+            <Table.HeaderCell></Table.HeaderCell>
           </Table.Row>
         </Table.Header>
     

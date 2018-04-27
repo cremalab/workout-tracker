@@ -1,17 +1,28 @@
 import React, { Component } from 'react'
 import { Search, Grid } from 'semantic-ui-react'
 
-const API_KEY = '541ec4c0a5c05e8f0ca36040e19f72c583c923fe'
-
 class SearchBar extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      term: ''
+    }
+  }
   render() {
     return (
       <Grid>
-        <Grid.Column width={8}>
-          <Search />
+        <Grid.Column width={18}>
+          <input 
+            value={this.state.term}
+            onChange={event => this.handleInputChange(event)}/>
         </Grid.Column>
       </Grid>
     )
+  }
+
+  handleInputChange(event){
+    this.setState({term: event.target.value})
+    console.log(this.state.term)
   }
 }
 

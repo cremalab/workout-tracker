@@ -1,46 +1,4 @@
-import React, { Component } from 'react'
-
-const workouts = [
-    {
-        name: '',
-        description: '',
-        distance: '',
-        time: ''
-    },
-    {
-        name: '',
-        description: '',
-        distance: '',
-        time: ''
-    },
-    {
-        name: '',
-        description: '',
-        distance: '',
-        time: ''
-    },
-    {
-        name: '',
-        description: '',
-        rounds: '',
-        reps: '',
-        weight: ''
-    },
-    {
-        name: '',
-        description: '',
-        rounds: '',
-        reps: '',
-        weight: ''
-    },
-    {
-        name: '',
-        description: '',
-        rounds: '',
-        reps: '',
-        weight: ''
-    }
-]
+import React from 'react'
 
 const ListItemSearchResult = (props) => {
     return (

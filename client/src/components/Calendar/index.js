@@ -3,7 +3,9 @@ import {Icon, TableHeaderCell, Table, Header, Segment } from 'semantic-ui-react'
 import styled from 'styled-components';
 import Moment from 'moment';
 import {extendMoment} from 'moment-range';
-const moment = extendMoment(Moment);
+const moment = extendMoment(Moment),
+      daysOfWeek = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
+
 
 const HeaderWrapper = styled.div`
     height: 80px;
@@ -52,6 +54,7 @@ class Calendar extends Component {
         }
         console.log('this.state.month: ' + this.state.month);
     }
+    
     nextMonth = ()=>{
         let month, year;
         if (this.state.month === 11){
@@ -68,9 +71,8 @@ class Calendar extends Component {
         }
     }
 
-    render(){
-        let daysOfWeek = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"],
-            year = this.state.year,
+    generateMonth(){
+        let year = this.state.year,
             month = this.state.month,
             startDate = moment([year, month]),
             firstOfMonth = moment(startDate).clone().startOf('month'),
@@ -81,66 +83,78 @@ class Calendar extends Component {
             lastOfMonthDay = lastOfMonth.day(),
             daysInMonth = moment([year, month]).daysInMonth(),
             weeksInMonth = Math.floor((firstOfMonthDay + daysInMonth)/7),
-            weeks = [];
-            
-        {   let week = [],
-                daysToAdd,
-                currentWeek = firstOfMonth.clone().day(firstOfMonthDay),
-                currentDay = parseInt(currentWeek.format('D'));
-                console.log('firstOfMONTH TOP: ' + firstOfMonth.toString());
-                console.log('weeksInMonth: ' + weeksInMonth);
-            while(currentWeek < lastOfMonth){
-                //add blank days to first week
-                if(currentDay === 1){
-                    for(var i = 0; i < firstOfMonthDay; i++){
-                        let blank = '';     
-                        week.push(blank);
-                    }
-                }
+            weeks = [],
+            daysToAdd,
+            currentWeek = firstOfMonth.clone().day(firstOfMonthDay),
+            currentDay = parseInt(currentWeek.format('D'));
 
-                //determine how many days to add after any necessary blanks have been added
-                if(currentDay === 1){//if first week of month 
-                    daysToAdd = 8 - week.length;
-                } else if (weeks.length >= weeksInMonth){//if last week of month
-                    if(lastOfMonthDay === 0){ //if month ends on Sunday
-                        daysToAdd = currentDay + (lastOfMonthDate - currentDay) + 1;
-                        console.log('EQUAL','lastOfMonthDate' + lastOfMonthDate ,'currDay: '+ currentDay,'daystoADD: ' +daysToAdd);
-                    } else {
-                        daysToAdd = currentDay + (lastOfMonthDate - currentDay) + 1;
-                    }
-                } else {
-                    daysToAdd = currentDay + 7;
+        while(currentWeek < lastOfMonth){
+            let week = []
+            //add blank days to first week
+            if(currentDay === 1){
+                for(var i = 0; i < firstOfMonthDay; i++){
+                    let blank = '';     
+                    week.push(blank);
                 }
-
-                //add remaining days after blanks
-                for(var i = currentDay; i < daysToAdd; i++){
-                    week.push(i); 
-                }
-
-                //determine how to increment currentDay and currentWeek
-                if(currentDay === 1){
-                    currentDay = currentDay + (7- firstOfMonthDay);
-                    currentWeek.add(7, 'day');
-                } else if ((weeks.length + 1) >= weeksInMonth){ //if last week of month
-                    currentDay = currentDay + 7;
-                    if(lastOfMonthDay === 6){ //if month ends on Saturday
-                        currentWeek.add( 6 , 'day');
-                    } else if (lastOfMonthDay === 0){ //if month ends on Sunday
-                        currentWeek.add( 1 , 'day');
-                    } else if (lastOfMonthDay === 1){ //if month ends on Monday
-                        currentWeek.add( 2 , 'day');
-                    } else {
-                        currentWeek.add((6 - lastOfMonthDay), 'day');
-                    }
-                } else {
-                    currentDay = currentDay + 7;
-                    currentWeek.add(7, 'day');
-                }
-                weeks.push([week]); 
-                week = [];
             }
-        }
-        
+
+            //determine how many days to add after any necessary blanks have been added
+            if(currentDay === 1){//if first week of month 
+                daysToAdd = 8 - week.length;
+            } else if (weeks.length >= weeksInMonth){//if last week of month
+                if(lastOfMonthDay === 0){ //if month ends on Sunday
+                    daysToAdd = currentDay + (lastOfMonthDate - currentDay) + 1;
+                    console.log('EQUAL','lastOfMonthDate' + lastOfMonthDate ,'currDay: '+ currentDay,'daystoADD: ' +daysToAdd);
+                } else {
+                    daysToAdd = currentDay + (lastOfMonthDate - currentDay) + 1;
+                }
+            } else {
+                daysToAdd = currentDay + 7;
+            }
+
+            //add remaining days after blanks
+            for(var i = currentDay; i < daysToAdd; i++){
+                week.push(i); 
+            }
+
+            //determine how to increment currentDay and currentWeek
+            if(currentDay === 1){
+                currentDay = currentDay + (7- firstOfMonthDay);
+                currentWeek.add(7, 'day');
+            } else if ((weeks.length + 1) >= weeksInMonth){ //if last week of month
+                currentDay = currentDay + 7;
+                if(lastOfMonthDay === 6){ //if month ends on Saturday
+                    currentWeek.add( 6 , 'day');
+                } else if (lastOfMonthDay === 0){ //if month ends on Sunday
+                    currentWeek.add( 1 , 'day');
+                } else if (lastOfMonthDay === 1){ //if month ends on Monday
+                    currentWeek.add( 2 , 'day');
+                } else {
+                    currentWeek.add((6 - lastOfMonthDay), 'day');
+                }
+            } else {
+                currentDay = currentDay + 7;
+                currentWeek.add(7, 'day');
+            }
+            weeks.push([week]); 
+            }
+
+         return(
+             weeks.map(([subweek]) => {
+                return (
+                    <Table.Row>
+                        {subweek.map((day) => {
+                            return(
+                                <Table.Cell>{day}</Table.Cell>
+                            );
+                        })}
+                    </Table.Row>
+                );
+             })
+         )
+    }
+
+    render(){
         return(
             <div>
                 <HeaderWrapper>
@@ -163,17 +177,7 @@ class Calendar extends Component {
                     </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                    {weeks.map(([subweek]) => {
-                        return (
-                            <Table.Row>
-                                {subweek.map((day) => {
-                                    return(
-                                        <Table.Cell>{day}</Table.Cell>
-                                    );
-                                })}
-                            </Table.Row>
-                        );
-                    })}
+                        {this.generateMonth()}
                     </Table.Body>
                 </Table>
             </div>

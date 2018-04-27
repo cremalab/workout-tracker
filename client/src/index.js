@@ -9,6 +9,9 @@ import runnerImage from './assets/runner.jpg';
 import plateImage from './assets/plate.jpg';
 import App from './components/App/App';
 import Calendar from './components/Calendar';
+import LogIn from './components/LogIn';
+import Dashboard from './components/Dashboard';
+
 
 const OuterWrapper = styled.div`
     height: 100vh;
@@ -33,6 +36,8 @@ ReactDOM.render((
                 <div>
                     <Route exact path="/" component={App} />
                     <Route path="/calendar" component={Calendar} />
+                    <Route path="/login" component={LogIn} />
+                    <Route path="/dashboard" component={Dashboard} />
                 </div>
             </InnerWrapper>
         </OuterWrapper>

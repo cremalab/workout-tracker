@@ -72,12 +72,12 @@ class Calendar extends Component {
     generateMonth(){
         let year = this.state.year,
             month = this.state.month,
-            weeks = monthUtil(year,month)
+            weeks = monthUtil(year, month)
          return(
-             weeks.map(([subweek]) => {
+             weeks.map(([week]) => {
                 return (
                     <Table.Row>
-                        {subweek.map((day) => {
+                        {week.map((day) => {
                             return(
                                 <Table.Cell>{day}</Table.Cell>
                             );

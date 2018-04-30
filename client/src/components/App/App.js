@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 class App extends Component {
   constructor(props){
@@ -40,6 +41,7 @@ class App extends Component {
               value="Submit" 
               onClick={this.handleSubmit}/>
           </form> 
+          <Link to="/login">Log In</Link>
       </div>
     );
   }

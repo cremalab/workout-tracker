@@ -8,6 +8,9 @@ import styled from 'styled-components';
 import runnerImage from './assets/runner.jpg';
 import App from './components/App/App';
 import ModalWorkout from './components/ModalWorkout';
+import LogIn from './components/LogIn';
+import Dashboard from './components/Dashboard';
+
 
 const OuterWrapper = styled.div`
     height: 100vh;
@@ -29,6 +32,8 @@ ReactDOM.render((
                 <div>
                     <Route exact path="/" component={App} />
                     <Route path="/workout" component={ModalWorkout} />
+                    <Route path="/login" component={LogIn} />
+                    <Route path="/dashboard" component={Dashboard} />
                 </div>
             </InnerWrapper>
         </OuterWrapper>

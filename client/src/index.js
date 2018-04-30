@@ -8,47 +8,7 @@ import styled from 'styled-components';
 import runnerImage from './assets/runner.jpg';
 import App from './components/App/App';
 import ModalWorkout from './components/ModalWorkout';
-const workouts = [
-    {
-        name: 'Run',
-        description: '',
-        distance: '',
-        time: ''
-    },
-    {
-        name: 'Bike',
-        description: '',
-        distance: '',
-        time: ''
-    },
-    {
-        name: 'Row',
-        description: '',
-        distance: '',
-        time: ''
-    },
-    {
-        name: 'Back Squat',
-        description: '',
-        rounds: '',
-        reps: '',
-        weight: ''
-    },
-    {
-        name: 'Hang Clean',
-        description: '',
-        rounds: '',
-        reps: '',
-        weight: ''
-    },
-    {
-        name: 'Kettlebell Swing',
-        description: '',
-        rounds: '',
-        reps: '',
-        weight: ''
-    }
-]
+
 const OuterWrapper = styled.div`
     height: 100vh;
     background: url(${runnerImage});

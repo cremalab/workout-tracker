@@ -1,11 +1,12 @@
 import React from 'react'
+import { Table, Icon } from 'semantic-ui-react'
 
-const ListItemSearchResult = (props) => {
+const ListItemSearchResult = ({workout}) => {
     return (
-        <div>
-            <li>Result</li>
-            <li>Result</li>
-        </div>
+        <Table.Row>
+            <Table.Cell>{workout.name}</Table.Cell>
+            <Table.Cell><Icon name="plus" /></Table.Cell>
+        </Table.Row>
     );
   }
   

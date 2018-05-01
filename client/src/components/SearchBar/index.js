@@ -11,7 +11,7 @@ class SearchBar extends Component {
   render() {
     return (
       <Grid>
-        <Grid.Column width={15}>
+        <Grid.Column>
           <input 
             value={this.state.term}
             onChange={event => this.handleInputChange(event)}/>

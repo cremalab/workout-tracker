@@ -3,8 +3,7 @@ export function selectExercise(exercise){
     //an object with a type property. 
     //Type describes purpose of action
     return {
-        type: 'EXERCISE_SELECTED',
-        payload: exercise,
-        index: 0
+        type: 'SELECT_EXERCISE',
+        payload: exercise
     }
 }

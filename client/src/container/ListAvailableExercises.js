@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Table } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { selectExercise } from '../state/actions'
+import { selectExercise } from '../state/actions/selectAction'
 import { bindActionCreators } from 'redux'
 
 class ListAvailableExercises extends Component {
@@ -42,8 +42,9 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps= (dispatch) => {
-    return bindActionCreators({ selectExercise: selectExercise }, dispatch)
-}
+//long-hand form of passing in { selectExercise } to connect
+// const mapDispatchToProps= (dispatch) => {
+//     return bindActionCreators({ selectExercise: selectExercise }, dispatch)
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ListAvailableExercises)
+export default connect(mapStateToProps, { selectExercise })(ListAvailableExercises)

@@ -1,13 +1,15 @@
-import { stat } from "fs";
+import _ from 'lodash'
 
-//State is not application state, only the state this reducer is responsible for
+//state is not application state, only the state this reducer is responsible for
 export default function(state = [], action){
     switch(action.type){
-        case 'EXERCISE_SELECTED':
+        case 'SELECT_EXERCISE':
             //return state.concat([action.payload])
             return [ action.payload, ...state ]
         case 'ADD_EXERCISE':
             return state
+        case 'SAVE_EXERCISE':
+            return _.mapKeys(action.payload, 'key')
         default:
             return state
     }

@@ -31,9 +31,9 @@ const defaultState = [
         name: 'Back Squat',
         description: '',
         workoutStats:{
-            rounds: '',
-            reps: '',
-            weight: ''
+            rounds: '5',
+            reps: '3',
+            weight: '215 lb'
         }
     },
     {
@@ -62,7 +62,7 @@ export default function(state = defaultState, action){
     switch(action.type){
         case 'ADD_EXERCISE':
             return state
-        case 'EXERCISE_SELECTED':
+        case 'SELECT_EXERCISE':
             return state
         default: 
             return state

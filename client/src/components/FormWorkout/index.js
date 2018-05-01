@@ -25,9 +25,28 @@ class FormWorkout extends Component {
           <ListSelectedExercises />
           <ListAvailableExercises/>
         </Form.Group>
-        <Form.Field control={Button}>Save</Form.Field>
+        <Form.Field 
+          onClick={this.handleSave}
+          control={Button}>Save</Form.Field>
       </Form>
     )
+  }
+  handleSave = (event) => {
+    const { workout } = this.state;
+        fetch("/api/workout/save",{
+          method: 'POST',
+          body: JSON.stringify({
+            workout
+          }),
+          headers: {
+            'Accept': 'application/json, */*',
+            'Content': 'application/json',
+          }
+        }).then(response => {
+          console.log(response);
+        })
+        .catch(err => console.log('Error: ' + err))
+        event.preventDefault();
   }
 }
 

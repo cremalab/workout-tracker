@@ -1,6 +1,7 @@
 'use strict';
 
 const User = require('../models/User'),
+      Workout = require('../models/Workout'),
       Joi = require('joi'),
       HapiAuthCookie = require('hapi-auth-cookie'),
       _ = require('lodash');
@@ -54,6 +55,17 @@ module.exports = [
                 // })
                 // console.log('not a user');
                 return user;
+            }
+       }
+    },
+    {
+        method: 'POST',
+        path: '/api/workout/save',
+        options: {
+            handler: async (request, h) => {
+                var payload = JSON.parse(request.payload);
+                Workout.create({payload})
+                return payload;
             }
        }
     }

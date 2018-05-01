@@ -55,7 +55,7 @@ const start = async () => {
 
 start();
 
-var connStr = 'mongodb://127.0.0.1:27017/user-login';
+var connStr = 'mongodb://127.0.0.1:27017/workout-tracker';
 mongoose.connect(connStr, function(err) {
     if (err) throw err;
     console.log('Successfully connected to MongoDB');

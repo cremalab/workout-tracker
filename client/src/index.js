@@ -10,6 +10,7 @@ import App from './components/App/App'
 import ModalWorkout from './components/ModalWorkout'
 import LogIn from './components/LogIn'
 import Dashboard from './components/Dashboard'
+import Calendar from './components/Calendar'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import reducers from './state/reducers'
@@ -19,7 +20,10 @@ const store=createStoreWithMiddleware(reducers);
 
 const OuterWrapper = styled.div`
     height: 100vh;
-    background: url(${runnerImage});
+    background: linear-gradient(
+        rgba(192,192,192,.2),
+        rgba(192,192,192,.2)
+      ), url(${runnerImage});
     background-size: cover;
     background-attachment: fixed;
     background-repeat: no-repeat;
@@ -27,7 +31,7 @@ const OuterWrapper = styled.div`
 `;
 
 const InnerWrapper = styled.div`
-    margin: 10px;
+    margin: 10%;
 `;
 
 ReactDOM.render((
@@ -40,6 +44,7 @@ ReactDOM.render((
                         <Route path="/workout" component={ModalWorkout} />
                         <Route path="/login" component={LogIn} />
                         <Route path="/dashboard" component={Dashboard} />
+                        <Route path="/calendar" component={Calendar} />
                     </div>
                 </InnerWrapper>
             </OuterWrapper>

@@ -12,6 +12,7 @@ export default function(state = [], action){
             //needs to return the array of selected exercises like 'SELECT_EXERCISE' is doing
             //but with the event.target.value of the input fields filled out
             //now has access to event object
+            //for now just save the all the names of the selected workouts? [{name: ''}, {name: ''}]
             return state
         default:
             return state

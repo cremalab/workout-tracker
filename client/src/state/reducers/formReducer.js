@@ -5,14 +5,11 @@ export default function(state = [], action){
     switch(action.type){
         case 'SELECT_EXERCISE':
             //return state.concat([action.payload])
-            return [ action.payload, ...state ]
+            return state
         case 'ADD_EXERCISE':
             return state
         case 'SAVE_EXERCISE':
-            //needs to return the array of selected exercises like 'SELECT_EXERCISE' is doing
-            //but with the event.target.value of the input fields filled out
-            //now has access to event object
-            return state
+            return [ action.payload, ...state ]
         default:
             return state
     }

@@ -1,20 +1,18 @@
 import React, { Component } from 'react'
 import { Button, Form } from 'semantic-ui-react'
 import SearchBar from '../SearchBar'
-//import ListSearchResults from '../ListSearchResults'
 import ListAvailableExercises from '../../container/ListAvailableExercises'
 import ListSelectedExercises from '../../container/ListSelectedExercises'
+import { connect } from 'react-redux'
+import { saveExercise } from '../../state/actions/saveAction'
 
 class FormWorkout extends Component {
   constructor(props){
     super(props)
-    this.state = {
-      workouts: []
-    }
   }
   render() {
     return (
-      <Form>
+      <Form onSubmit={event => this.handleSubmit(event)}>
         <Form.Group widths='equal'>
             <SearchBar />
             <Form.Field>
@@ -26,28 +24,45 @@ class FormWorkout extends Component {
           <ListAvailableExercises/>
         </Form.Group>
         <Form.Field 
-          onClick={this.handleSave}
           control={Button}>Save</Form.Field>
       </Form>
     )
   }
-  handleSave = (event) => {
-    const { workout } = this.state;
-        fetch("/api/workout/save",{
-          method: 'POST',
-          body: JSON.stringify({
-            workout
-          }),
-          headers: {
-            'Accept': 'application/json, */*',
-            'Content': 'application/json',
-          }
-        }).then(response => {
-          console.log(response);
-        })
-        .catch(err => console.log('Error: ' + err))
-        event.preventDefault();
+  handleSubmit(event){
+    event.preventDefault();
+    //console.log(this.props.formData)
+    let formDataObject = {}
+    for(let object of this.props.formData){
+      console.log(object)
+      for(let objectIndex in object){
+        //if(objectIndex==='name'){
+          //console.log(object[objectIndex])
+          formDataObject = object
+          console.log(formDataObject)
+        //}
+      } 
+    }
+    fetch("/api/workout/save",{
+      method: 'POST',
+      body: JSON.stringify({
+        formDataObject
+      }),
+      headers: {
+          'Accept': 'application/json, */*',
+          'Content': 'application/json',
+      }
+      }).then(response => {
+        console.log(response);
+      })
+      .catch(err => console.log('Error: ' + err))
+      event.preventDefault();
   }
 }
 
-export default FormWorkout
+const mapStateToProps = (state) =>{
+  return{
+    formData: state.activeExercise
+  }
+}
+
+export default connect(mapStateToProps, { saveExercise })(FormWorkout)

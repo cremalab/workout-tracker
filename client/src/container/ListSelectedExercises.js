@@ -32,17 +32,20 @@ class ListSelectedExercises extends Component {
                     <Table.Cell>
                         {oneExercise.name}
                     </Table.Cell>
-                    { console.log(
+                    {/* { console.log(
                         Object.entries(
                            oneExercise.workoutStats
                         )
                         )
-                    }
+                    } */}
                     {
                         Object.entries(oneExercise.workoutStats).map((key) => {
                             return (
                                 <Table.Cell>
-                                    <input placeholder={key} name={oneExercise.name + '.' + key} onChange={this.handleChange}/>
+                                    <input 
+                                        placeholder={key} 
+                                        name={oneExercise.name + '.' + key} 
+                                        onChange={this.handleChange}/>
                                 </Table.Cell>
                             )
                         })
@@ -53,14 +56,15 @@ class ListSelectedExercises extends Component {
     }
 
     handleChange = (event) => {
-        console.log({[event.target.name]: event.target.value})
-        saveExercise({[event.target.name]: event.target.value});
+        //console.log({[event.target.name]: event.target.value})
+        //console.log(this.props.saveExercise(event))
     }
 }
 
 const mapStateToProps = (state) => {
     return {
-        exercise: state.activeExercise
+        exercise: state.activeExercise,
+        //exerciseDetails: state.activeExerciseDetails
     }
 }
 

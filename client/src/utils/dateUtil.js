@@ -60,3 +60,6 @@ export function monthUtil(year, month){
 
 }
 
+export function padDate(string){
+    return string.padStart(2, '0');
+}

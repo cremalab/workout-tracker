@@ -53,5 +53,3 @@ ReactDOM.render((
 ), document.getElementById('root'));
 
 registerServiceWorker();
-
-store.dispatch({ type: '@@INIT' });

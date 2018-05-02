@@ -5,18 +5,23 @@ import ListAvailableExercises from '../../container/ListAvailableExercises'
 import ListSelectedExercises from '../../container/ListSelectedExercises'
 import { connect } from 'react-redux'
 import { saveExercise } from '../../state/actions/saveAction'
+import moment from 'moment'
 
 class FormWorkout extends Component {
   constructor(props){
     super(props)
+    this.state = {
+        date: moment().format(this.props.thisYear + '-' + this.props.thisMonth + '-' + this.props.thisDay) || moment().format('YYYY-MM-DD')
+    }
   }
+
   render() {
     return (
       <Form onSubmit={event => this.handleSubmit(event)}>
         <Form.Group widths='equal'>
             <SearchBar />
             <Form.Field>
-              <input type='date'/>
+              <input type='date' defaultValue={this.state.date}/>
             </Form.Field>
         </Form.Group>
         <Form.Group inline>

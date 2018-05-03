@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Table } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { selectExercise } from '../state/actions/selectAction'
+import { selectExercise } from '../state/actions/selectExercise'
 import { bindActionCreators } from 'redux'
 
 class ListAvailableExercises extends Component {

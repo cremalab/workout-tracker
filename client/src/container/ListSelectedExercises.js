@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Table } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { saveExercise } from '../state/actions/saveAction'
+import { saveWorkout } from '../state/actions/saveWorkout'
 import _ from 'lodash'
 
 class ListSelectedExercises extends Component {
@@ -25,26 +25,20 @@ class ListSelectedExercises extends Component {
         )
     }
 
-    renderList(exerciseData) {
+    renderList() {
         return this.props.exercise.map( (oneExercise) => {
             return (
                 <Table.Row>
                     <Table.Cell>
-                        {oneExercise.name}
+                        {oneExercise.exerciseName}
                     </Table.Cell>
-                    {/* { console.log(
-                        Object.entries(
-                           oneExercise.workoutStats
-                        )
-                        )
-                    } */}
                     {
-                        Object.entries(oneExercise.workoutStats).map((key) => {
+                        Object.entries(oneExercise.exerciseStats).map((key) => {
                             return (
                                 <Table.Cell>
                                     <input 
                                         placeholder={key} 
-                                        name={oneExercise.name + '.' + key} 
+                                        name={oneExercise.exerciseName + '.' + key} 
                                         onChange={this.handleChange}/>
                                 </Table.Cell>
                             )
@@ -64,8 +58,7 @@ class ListSelectedExercises extends Component {
 const mapStateToProps = (state) => {
     return {
         exercise: state.activeExercise,
-        //exerciseDetails: state.activeExerciseDetails
     }
 }
 
-export default connect(mapStateToProps, { saveExercise })(ListSelectedExercises)
+export default connect(mapStateToProps, { saveWorkout })(ListSelectedExercises)

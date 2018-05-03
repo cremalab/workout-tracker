@@ -4,7 +4,7 @@ import SearchBar from '../SearchBar'
 import ListAvailableExercises from '../../container/ListAvailableExercises'
 import ListSelectedExercises from '../../container/ListSelectedExercises'
 import { connect } from 'react-redux'
-import { saveExercise } from '../../state/actions/saveAction'
+import { saveWorkout } from '../../state/actions/saveWorkout'
 import moment from 'moment'
 
 class FormWorkout extends Component {
@@ -17,7 +17,7 @@ class FormWorkout extends Component {
 
   render() {
     return (
-      <Form onSubmit={event => this.handleSubmit(event)}>
+      <Form onSubmit={() => this.handleSubmit(this.props.formData)}>
         <Form.Group widths='equal'>
             <SearchBar />
             <Form.Field>
@@ -33,28 +33,31 @@ class FormWorkout extends Component {
       </Form>
     )
   }
-  handleSubmit(event){
-    event.preventDefault();
-    //console.log(this.props.formData)
-    let formDataObject = {}
-    for(let object of this.props.formData){
-      //console.log('object: ' + object)
-      for(let key in object){
-        if(key ==='name'){
-        //   //console.log(object[objectIndex])
-        //   formDataObject = object[key]
-          formDataObject[key] = object[key]
-          console.log(key)
-          console.log(object[key])
-        }
-      } 
-      
-    }
-    console.log(formDataObject)
+  handleSubmit(formData){
+    //event.preventDefault();
+    // //console.log(this.props.formData)
+    // let formDataObject = {}
+    // for(let object of this.props.formData){
+    //   //console.log('object: ' + object)
+    //   for(let key in object){
+    //     if(key ==='name'){
+    //     //   //console.log(object[objectIndex])
+    //     //   formDataObject = object[key]
+    //       formDataObject[key] = object[key]
+    //       console.log(key)
+    //       console.log(object[key])
+    //     }
+    //   } 
+    // }
+    console.log(typeof formData)
+    console.log(formData[0])
+   
+    var oneObject = formData[0]
+    console.log(JSON.stringify(oneObject))
     fetch("/api/workout/save",{
       method: 'POST',
       body: JSON.stringify({
-        name: 'Pole Vault'
+        oneObject
       }),
       headers: {
           'Accept': 'application/json, */*',
@@ -64,7 +67,6 @@ class FormWorkout extends Component {
         console.log(response);
       })
       .catch(err => console.log('Error: ' + err))
-      event.preventDefault();
   }
 }
 
@@ -74,4 +76,4 @@ const mapStateToProps = (state) =>{
   }
 }
 
-export default connect(mapStateToProps, { saveExercise })(FormWorkout)
+export default connect(mapStateToProps, { saveWorkout })(FormWorkout)

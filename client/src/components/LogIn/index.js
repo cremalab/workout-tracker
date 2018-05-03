@@ -55,6 +55,7 @@ class LogIn extends Component {
     }
     handleSubmit = (event) => {
         const { logInEmail, logInPassword } = this.state;
+        event.preventDefault();
         fetch("/api/users/login",{
           method: 'POST',
           body: JSON.stringify({

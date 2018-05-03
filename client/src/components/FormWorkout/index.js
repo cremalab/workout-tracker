@@ -50,14 +50,14 @@ class FormWorkout extends Component {
     //   } 
     // }
     console.log(typeof formData)
-    console.log(formData[0])
-   
+    console.log(formData)
+    console.log(JSON.stringify(formData))
     var oneObject = formData[0]
     console.log(JSON.stringify(oneObject))
     fetch("/api/workout/save",{
       method: 'POST',
       body: JSON.stringify({
-        oneObject
+        formData
       }),
       headers: {
           'Accept': 'application/json, */*',

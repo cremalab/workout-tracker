@@ -63,16 +63,14 @@ module.exports = [
         path: '/api/workout/save',
         handler: async (request, h) => {
             var payload = JSON.parse(request.payload);
-            console.log(payload.oneObject.name)
-            Workout.create({payload})
+            console.log(payload)
             const workout = new Workout({
-                name: payload.oneObject.name
+                workout: payload.formData
             })
             workout.save((err) => {
                 if(err) {console.log(err); return err}
                 console.log('saved')
             });
-            
             return payload;
         }
 

@@ -5,7 +5,8 @@ import registerServiceWorker from './registerServiceWorker'
 import 'semantic-ui-css/semantic.min.css'
 import './index.css'
 import styled from 'styled-components'
-import runnerImage from './assets/runner.jpg'
+import NavBar from './components/NavBar';
+import barbellImage from './assets/barbell.jpg'
 import App from './components/App/App'
 import ModalWorkout from './components/ModalWorkout'
 import LogIn from './components/LogIn'
@@ -23,7 +24,7 @@ const OuterWrapper = styled.div`
     background: linear-gradient(
         rgba(192,192,192,.2),
         rgba(192,192,192,.2)
-      ), url(${runnerImage});
+      ), url(${barbellImage});
     background-size: cover;
     background-attachment: fixed;
     background-repeat: no-repeat;

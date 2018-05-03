@@ -38,19 +38,23 @@ class FormWorkout extends Component {
     //console.log(this.props.formData)
     let formDataObject = {}
     for(let object of this.props.formData){
-      console.log(object)
-      for(let objectIndex in object){
-        //if(objectIndex==='name'){
-          //console.log(object[objectIndex])
-          formDataObject = object
-          console.log(formDataObject)
-        //}
+      //console.log('object: ' + object)
+      for(let key in object){
+        if(key ==='name'){
+        //   //console.log(object[objectIndex])
+        //   formDataObject = object[key]
+          formDataObject[key] = object[key]
+          console.log(key)
+          console.log(object[key])
+        }
       } 
+      
     }
+    console.log(formDataObject)
     fetch("/api/workout/save",{
       method: 'POST',
       body: JSON.stringify({
-        formDataObject
+        name: 'Pole Vault'
       }),
       headers: {
           'Accept': 'application/json, */*',

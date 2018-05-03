@@ -61,12 +61,18 @@ module.exports = [
     {
         method: 'POST',
         path: '/api/workout/save',
-        options: {
-            handler: async (request, h) => {
-                var payload = JSON.parse(request.payload);
-                Workout.create({payload})
-                return payload;
-            }
-       }
+        handler: async (request, h) => {
+            var payload = JSON.parse(request.payload);
+            //Workout.create({payload})
+            const workout = new Workout({
+                name: 'Skipping'
+            })
+            workout.save((err) => {
+                if(err) {console.log(err); return err}
+                console.log('saved')
+            });
+            return payload;
+        }
+
     }
 ];

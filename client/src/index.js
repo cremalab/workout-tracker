@@ -15,8 +15,9 @@ import Calendar from './components/Calendar'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import reducers from './state/reducers'
+import {composeWithDevTools} from 'redux-devtools-extension'
 
-const createStoreWithMiddleware = applyMiddleware()(createStore);
+const createStoreWithMiddleware = composeWithDevTools(applyMiddleware())(createStore);
 const store=createStoreWithMiddleware(reducers);
 
 const OuterWrapper = styled.div`

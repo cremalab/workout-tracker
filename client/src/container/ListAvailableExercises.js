@@ -8,17 +8,6 @@ import _ from 'lodash'
 class ListAvailableExercises extends Component {
 
     renderList(){
-        // return Object.values(this.props.exercises).map((exercise) => {
-        //     return (
-        //         <Table.Row>
-        //             <Table.Cell 
-        //               //onClick={() => this.props.selectExercise(exercise)}
-        //               >
-        //                 {exercise['name']}
-        //             </Table.Cell>
-        //         </Table.Row>
-        //     )
-        // })
         return _.map(this.props.exercises, exercise => {
             return  (
                 <Table.Row>

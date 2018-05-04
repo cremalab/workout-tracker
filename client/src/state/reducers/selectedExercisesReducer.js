@@ -2,32 +2,28 @@
 export default function(state = {}, action){
     switch(action.type){
         case 'SELECT_EXERCISE':
-            // const newExercises = state.activeExercise({
-            //     key: exerciseKey,
-            //     name: exerciseName,
-            //     stats: exerciseStats
-            // })
-            //console.log(action.payload)
-            // {...state, 
-            //             key: action.payload.exercisekey,
-            //             name: action.payload.exerciseName,
-            //             workoutStats: {...state.exerciseStats}
-            //         }
-            return [...state, action.payload]
+            if(state[action.payload.exerciseKey]){
+                return state
+            }
+            return {...state, 
+                    [action.payload.exerciseKey]:action.payload}
         case 'UPDATE_EXERCISE':
-            // const {payload} = action
-            // const {name, value} = payload
-            // const exercise = state[key]
-            return state
-            // {...state, 
-            //             [key] : {
-            //                 ...exercise,
-            //                 exerciseStats: exercise.exerciseStats.concat(exerciseStats)
-            //             }
-            //         }
-            //return [...state, activeExercise: action.payload.workoutStats]
+            const {payload} = action
+            const { exerciseKey, 
+                exerciseStatName, 
+                value} = payload
+            const exercise = state[exerciseKey]
+            console.log(exercise)
+            return {...state, 
+                        [exerciseKey] : {
+                            ...exercise,
+                            exerciseStats: {
+                                ...exercise.exerciseStats,
+                                [exerciseStatName]: value
+                            }
+                        }
+                    }
         case 'SAVE_WORKOUT':
-            //return state with input populated
             return state
         default:
             return state

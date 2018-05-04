@@ -5,7 +5,7 @@ export function selectExercise(exercise){
         {
             exerciseKey: exercise.key,
             exerciseName: exercise.name,
-            exerciseStats: exercise.workoutStats
+            exerciseStats: exercise.exerciseStats
         }
     }
 }

@@ -40,11 +40,7 @@ class ListSelectedExercises extends Component {
                                 <input 
                                     placeholder={key} 
                                     name={exercise.exerciseName + '.' + key}
-                                    //make controlled input field that recieves value from state
-                                    //when state changes should update?
-                                    //it's receiving value from state but state is not getting updated
-                                    //value={this.props.exercises.exerciseStats} 
-                                    onChange={this.handleChange}/>
+                                    onChange={(event)=>this.handleChange(event, exercise.exerciseKey, key)}/>
                                 </Table.Cell>
                             )
                         })
@@ -54,13 +50,9 @@ class ListSelectedExercises extends Component {
         })
     }
 
-    handleChange = (event) => {
+    handleChange = (event, exerciseKey, exerciseStatKey) => {
         console.log({[event.target.name]: event.target.value})
-        //console.log(this.props.exercise.exerciseStats)
-        //call select exercise again and pass in values for workoutStats this time?
-        //equivalent of setState() for redux
-        //what parameters to pass? just exercise? but that hasn't been updated. need more parameters?
-        updateExercise(event.target.name, event.target.value)
+        this.props.updateExercise(exerciseKey, exerciseStatKey, event.target.value)
     }
 }
 

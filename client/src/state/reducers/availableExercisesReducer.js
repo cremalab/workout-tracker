@@ -2,15 +2,15 @@ const defaultState = {
     1: {
         key: '1',
         name: 'Run',
-        workoutStats:{
-          distance: '3 miles',
-          time: '15:00 min'
+        exerciseStats:{
+          distance: '',
+          time: ''
         }
     },
     2: {
         key: '2',
         name: 'Bike',
-        workoutStats:{
+        exerciseStats:{
             distance: '',
             time: ''
         }
@@ -18,7 +18,7 @@ const defaultState = {
     3: {
         key: '3',
         name: 'Row',
-        workoutStats:{
+        exerciseStats:{
             distance: '',
             time: ''
         }
@@ -26,16 +26,16 @@ const defaultState = {
     4: {
         key: '4',
         name: 'Back Squat',
-        workoutStats:{
-            rounds: '5',
-            reps: '3',
-            weight: '215 lb'
+        exerciseStats:{
+            rounds: '',
+            reps: '',
+            weight: ''
         }
     },
     5: {
         key: '5',
         name: 'Hang Clean',
-        workoutStats:{
+        exerciseStats:{
             rounds: '',
             reps: '',
             weight: ''
@@ -44,7 +44,7 @@ const defaultState = {
     6: {
         key: '6',
         name: 'Kettlebell Swing',
-        workoutStats:{
+        exerciseStats:{
             rounds: '',
             reps: '',
             weight: ''

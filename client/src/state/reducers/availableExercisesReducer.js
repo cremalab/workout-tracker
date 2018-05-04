@@ -1,5 +1,5 @@
-const defaultState = [
-    {
+const defaultState = {
+    1: {
         key: '1',
         name: 'Run',
         workoutStats:{
@@ -7,7 +7,7 @@ const defaultState = [
           time: '15:00 min'
         }
     },
-    {
+    2: {
         key: '2',
         name: 'Bike',
         workoutStats:{
@@ -15,7 +15,7 @@ const defaultState = [
             time: ''
         }
     },
-    {
+    3: {
         key: '3',
         name: 'Row',
         workoutStats:{
@@ -23,7 +23,7 @@ const defaultState = [
             time: ''
         }
     },
-    {
+    4: {
         key: '4',
         name: 'Back Squat',
         workoutStats:{
@@ -32,7 +32,7 @@ const defaultState = [
             weight: '215 lb'
         }
     },
-    {
+    5: {
         key: '5',
         name: 'Hang Clean',
         workoutStats:{
@@ -41,7 +41,7 @@ const defaultState = [
             weight: ''
         }
     },
-    {
+    6: {
         key: '6',
         name: 'Kettlebell Swing',
         workoutStats:{
@@ -50,12 +50,13 @@ const defaultState = [
             weight: ''
         }
     }
-]
+}
 
 export default function(state = defaultState, action){
     switch(action.type){
-        case 'ADD_EXERCISE':
-            return state
+        //future use: allow user to add custom exercise
+        // case 'ADD_EXERCISE':
+        //     return state
         case 'SELECT_EXERCISE':
             return state
         default: 

@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import { Table } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { saveWorkout } from '../state/actions/saveWorkout'
+import { updateExercise } from '../state/actions/updateExercise'
 import _ from 'lodash'
+import { selectExercise } from '../state/actions/selectExercise';
 
 class ListSelectedExercises extends Component {
 
     render(){
-        if(this.props.exercise.length === 0){
+        if(this.props.exercises.length === 0){
             return <div>Select a movement to add it to your workout.</div>
         }
         return (
@@ -26,39 +27,47 @@ class ListSelectedExercises extends Component {
     }
 
     renderList() {
-        return this.props.exercise.map( (oneExercise) => {
+        return _.map(this.props.exercises, exercise => {
             return (
                 <Table.Row>
                     <Table.Cell>
-                        {oneExercise.exerciseName}
+                        {exercise.exerciseName}
                     </Table.Cell>
                     {
-                        Object.entries(oneExercise.exerciseStats).map((key) => {
+                        Object.keys(exercise.exerciseStats).map( key => {
                             return (
                                 <Table.Cell>
-                                    <input 
-                                        placeholder={key} 
-                                        name={oneExercise.exerciseName + '.' + key} 
-                                        onChange={this.handleChange}/>
+                                <input 
+                                    placeholder={key} 
+                                    name={exercise.exerciseName + '.' + key}
+                                    //make controlled input field that recieves value from state
+                                    //when state changes should update?
+                                    //it's receiving value from state but state is not getting updated
+                                    //value={this.props.exercises.exerciseStats} 
+                                    onChange={this.handleChange}/>
                                 </Table.Cell>
                             )
                         })
-                    }
+                    } 
                 </Table.Row>
             )
         })
     }
 
     handleChange = (event) => {
-        //console.log({[event.target.name]: event.target.value})
-        //console.log(this.props.saveExercise(event))
+        console.log({[event.target.name]: event.target.value})
+        //console.log(this.props.exercise.exerciseStats)
+        //call select exercise again and pass in values for workoutStats this time?
+        //equivalent of setState() for redux
+        //what parameters to pass? just exercise? but that hasn't been updated. need more parameters?
+        updateExercise(event.target.name, event.target.value)
     }
 }
 
 const mapStateToProps = (state) => {
     return {
-        exercise: state.activeExercise,
+        exercises: state.activeExercises,
     }
 }
 
-export default connect(mapStateToProps, { saveWorkout })(ListSelectedExercises)
+export default connect(mapStateToProps, { updateExercise })(ListSelectedExercises)

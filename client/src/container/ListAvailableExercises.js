@@ -3,16 +3,27 @@ import { Table } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { selectExercise } from '../state/actions/selectExercise'
 import { bindActionCreators } from 'redux'
+import _ from 'lodash'
 
 class ListAvailableExercises extends Component {
 
     renderList(){
-        return this.props.exercises.map( (exercise) => {
-            return (
+        // return Object.values(this.props.exercises).map((exercise) => {
+        //     return (
+        //         <Table.Row>
+        //             <Table.Cell 
+        //               //onClick={() => this.props.selectExercise(exercise)}
+        //               >
+        //                 {exercise['name']}
+        //             </Table.Cell>
+        //         </Table.Row>
+        //     )
+        // })
+        return _.map(this.props.exercises, exercise => {
+            return  (
                 <Table.Row>
-                    <Table.Cell 
-                        key={exercise.key} 
-                        onClick={() => this.props.selectExercise(exercise)}>
+                    <Table.Cell
+                     onClick={() => this.props.selectExercise(exercise)}>
                         {exercise.name}
                     </Table.Cell>
                 </Table.Row>
@@ -29,7 +40,7 @@ class ListAvailableExercises extends Component {
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                    {this.renderList()}   
+                    {this.renderList()}    
                 </Table.Body>
             </Table>
         )

@@ -29,31 +29,12 @@ class FormWorkout extends Component {
           <ListAvailableExercises/>
         </Form.Group>
         <Form.Field 
-          control={Button}>Save</Form.Field>
+          control={Button}
+          onClick={this.props.close}>Save</Form.Field>
       </Form>
     )
   }
   handleSubmit(formData){
-    //event.preventDefault();
-    // //console.log(this.props.formData)
-    // let formDataObject = {}
-    // for(let object of this.props.formData){
-    //   //console.log('object: ' + object)
-    //   for(let key in object){
-    //     if(key ==='name'){
-    //     //   //console.log(object[objectIndex])
-    //     //   formDataObject = object[key]
-    //       formDataObject[key] = object[key]
-    //       console.log(key)
-    //       console.log(object[key])
-    //     }
-    //   } 
-    // }
-    console.log(typeof formData)
-    console.log(formData)
-    console.log(JSON.stringify(formData))
-    var oneObject = formData[0]
-    console.log(JSON.stringify(oneObject))
     fetch("/api/workout/save",{
       method: 'POST',
       body: JSON.stringify({
@@ -72,7 +53,7 @@ class FormWorkout extends Component {
 
 const mapStateToProps = (state) =>{
   return{
-    formData: state.activeExercise
+    formData: state.activeExercises
   }
 }
 

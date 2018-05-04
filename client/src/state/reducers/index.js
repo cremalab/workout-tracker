@@ -5,7 +5,7 @@ import FormReducer from './formReducer'
 
 const rootReducer = combineReducers({
   exercises: AvailableExercisesReducer,
-  activeExercise: SelectedExercisesReducer,
+  activeExercises: SelectedExercisesReducer,
   savedForm: FormReducer
 });
 

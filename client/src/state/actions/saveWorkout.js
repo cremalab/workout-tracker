@@ -1,10 +1,11 @@
 //Will save selected exercises, user input, and date
-export function saveWorkout(name, value){
-    return {
-        type: 'SAVE_WORKOUT',
-        payload: {
-            name,
-            value
-        }
-    }
-}
+//moved this to UPDTAE_EXERCISE for now
+// export function saveWorkout(name, value){
+//     return {
+//         type: 'SAVE_WORKOUT',
+//         payload: {
+//             name,
+//             value
+//         }
+//     }
+// }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Segment, Button, Divider, Form } from 'semantic-ui-react'
 
 class App extends Component {

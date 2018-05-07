@@ -37,9 +37,13 @@ class Calendar extends Component {
         super(props);
         this.state={
             month: moment().month(),
-            year: moment().year(),        
+            year: moment().year(), 
+            open: false       
         }
     }
+
+    open = () => this.setState({ open: true })
+    close = () => this.setState({ open: false })
 
     previousMonth = ()=>{
         if(this.state.month === 0){
@@ -82,13 +86,18 @@ class Calendar extends Component {
                         {week.map((day) => {
                             return(
                                 <Modal 
-                                trigger={<Table.Cell value={day}>{day}</Table.Cell>} 
-                                style={{marginTop: "10%", marginLeft: "10%", marginRight: "10%"}}>
+                                    trigger={<Table.Cell value={day}>
+                                            {day}
+                                            </Table.Cell>} 
+                                    style={{marginTop: "10%", marginLeft: "10%", marginRight: "10%"}}>
                                     <Modal.Header>Log Workout</Modal.Header>
                                         <Modal.Content image>
                                         <Modal.Description>
                                             <Header></Header>
-                                                <FormWorkout thisDay={padDate(day.toString())} thisMonth={padDate((this.state.month + 1).toString())} thisYear={this.state.year}/>
+                                                <FormWorkout 
+                                                    thisDay={padDate(day.toString())} 
+                                                    thisMonth={padDate((this.state.month + 1).toString())} 
+                                                    thisYear={this.state.year}/>
                                         </Modal.Description>
                                         </Modal.Content>
                                 </Modal>

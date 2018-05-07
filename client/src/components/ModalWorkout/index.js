@@ -13,7 +13,7 @@ class ModalWorkout extends Component {
 
     open = () => this.setState({ open: true })
     close = () => this.setState({ open: false })
-
+   
     render(){
         const { open } = this.state
         return(
@@ -27,8 +27,7 @@ class ModalWorkout extends Component {
                 <Modal.Content image>
                     <Modal.Description>
                         <Header></Header>
-                            <FormWorkout open={this.state.open} close={() => this.setState({ open: false })}/>
-                            <Button onClick={this.close}>Close</Button>
+                            <FormWorkout handleClose={this.close}/>
                     </Modal.Description>
                 </Modal.Content>
             </Modal>

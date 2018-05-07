@@ -30,7 +30,8 @@ class FormWorkout extends Component {
         </Form.Group>
         <Form.Field 
           control={Button}
-          onClick={this.props.close}>Save</Form.Field>
+          onClick={console.log(this.props.handleClose)}>
+          Save</Form.Field>
       </Form>
     )
   }
@@ -45,7 +46,7 @@ class FormWorkout extends Component {
           'Content': 'application/json',
       }
       }).then(response => {
-        console.log(response);
+        //console.log(response);
       })
       .catch(err => console.log('Error: ' + err))
   }

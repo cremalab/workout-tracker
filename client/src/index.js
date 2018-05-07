@@ -11,6 +11,8 @@ import App from './components/App/App';
 import Calendar from './components/Calendar';
 import LogIn from './components/LogIn';
 import Dashboard from './components/Dashboard';
+import NavBar from './components/NavBar';
+import Profile from './components/Profile';
 
 
 const OuterWrapper = styled.div`
@@ -32,12 +34,14 @@ const InnerWrapper = styled.div`
 ReactDOM.render((
     <Router>
         <OuterWrapper>
+            <NavBar />
             <InnerWrapper>
                 <div>
                     <Route exact path="/" component={App} />
                     <Route path="/calendar" component={Calendar} />
                     <Route path="/login" component={LogIn} />
                     <Route path="/dashboard" component={Dashboard} />
+                    <Route path="/profile" component={Profile} />
                 </div>
             </InnerWrapper>
         </OuterWrapper>

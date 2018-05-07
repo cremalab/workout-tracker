@@ -5,6 +5,7 @@
   "proxy": "http://localhost:5000",
   "dependencies": {
     "axios": "^0.18.0",
+    "cloudinary-react": "^1.0.6",
     "hapi": "^17.3.1",
     "inert": "^5.1.0",
     "moment": "^2.22.0",

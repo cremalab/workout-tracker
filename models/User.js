@@ -6,7 +6,11 @@ const mongoose = require('mongoose'),
 const UserSchema = new Schema({
   email: String,
   password: {type: String, toJSON: false, select: false},
-});
+  firstName: String,
+  lastName: String,
+  image: String,
+  image_id: String
+}, {strict: false});
 
 UserSchema.plugin(passportLocalMongoose, { 
   usernameField: 'email', 

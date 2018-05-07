@@ -56,5 +56,14 @@ module.exports = [
                 return user;
             }
        }
-    }
+    },
+    {
+        method: 'POST',
+        path: '/api/users/profile',
+        handler: async(request, h) => {
+            var payload = JSON.parse(request.payload);
+            console.log(payload, payload.result[0].url, payload.result[0].public_id);
+            return payload;  
+        }
+    },
 ];

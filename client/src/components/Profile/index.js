@@ -3,11 +3,23 @@ import { Button, Form } from 'semantic-ui-react'
 import {Image, Video, Transformation, CloudinaryContext } from 'cloudinary-react';
 
 class Profile extends Component {
+    constructor(props){
+        super(props);
+        this.state ={
+            profilePicId: "placeholder2"
+        }
+    }
+
     render(){
         return(
             <Form>
-                <Button
-                    onClick={this.handleImageUpload}>+</Button>
+                <Form.Group>
+                    <Image cloudName="workout-tracker" 
+                            publicId={this.state.profilePicId} 
+                            width="100" crop="scale" 
+                            onClick={this.handleImageUpload}
+                            style={{cursor : "pointer"}}/>
+                </Form.Group>
                 <Form.Group widths='equal'>
                     <Form.Field>
                     <label>First Name</label>
@@ -54,7 +66,24 @@ class Profile extends Component {
     handleImageUpload= () => {
         console.log('image')
         window.cloudinary.openUploadWidget({ cloud_name: 'workout-tracker', upload_preset: 'engrhael'}, 
-        function(error, result) { console.log(error, result) });
+            (error, result) => { 
+                console.log(error, result); 
+                if (error) {
+                    throw error
+                } else if (result[0]){
+                    this.setState({profilePicId: result[0].public_id})   
+                } 
+        });
+        // fetch('/api/users/profile',{
+        //     method: 'POST',
+        //     body: JSON.stringify({
+        //         result
+        //     }),
+        //     headers: {
+        //     'Accept': 'application/json, text/plain, */*',
+        //     'Content': 'application/json'
+        //     }
+        // }).then(response => response.json()) 
     }
 }
 

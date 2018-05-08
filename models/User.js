@@ -1,17 +1,17 @@
 const mongoose = require('mongoose'),
-      Schema = mongoose.Schema
-      Joi =require('joi')
-      passportLocalMongoose = require('passport-local-mongoose');
+      Schema = mongoose.Schema,
+      Joi =require('joi');
+      //passportLocalMongoose = require('passport-local-mongoose');
   
 const UserSchema = new Schema({
   email: String,
   password: {type: String, toJSON: false, select: false},
 });
 
-UserSchema.plugin(passportLocalMongoose, { 
-  usernameField: 'email', 
-  hashField: 'password', 
-  usernameLowerCase: true 
-});
+// UserSchema.plugin(passportLocalMongoose, { 
+//   usernameField: 'email', 
+//   hashField: 'password', 
+//   usernameLowerCase: true 
+// });
 
 module.exports = mongoose.model('User', UserSchema);

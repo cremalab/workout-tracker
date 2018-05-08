@@ -64,10 +64,12 @@ class App extends Component {
         }),
         headers: {
           'Accept': 'application/json, text/plain, */*',
-          'Content': 'application/json'
+          'Content': 'application/json',
+          'Authorization' : 'bearer 1234'
         }
       }).then(response => response.json())
     }
+    event.preventDefault()
   }
 }
 export default App;

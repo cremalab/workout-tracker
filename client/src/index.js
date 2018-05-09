@@ -12,6 +12,8 @@ import LogIn from './components/LogIn'
 import Dashboard from './components/Dashboard'
 import Calendar from './components/Calendar'
 import Profile from './components/Profile';
+import barbellImage from './assets/barbell.jpg'
+import ModalWorkout from './components/ModalWorkout'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import reducers from './state/reducers'
@@ -25,7 +27,7 @@ const OuterWrapper = styled.div`
     background: linear-gradient(
         rgba(192,192,192,.2),
         rgba(192,192,192,.2)
-      ), url(${plateImage});
+      ), url(${barbellImage});
     background-size: cover;
     background-attachment: fixed;
     background-repeat: no-repeat;
@@ -48,6 +50,7 @@ ReactDOM.render((
                         <Route path="/dashboard" component={Dashboard} />
                         <Route path="/calendar" component={Calendar} />
                         <Route path="/profile" component={Profile} />
+                        <Route path="/workout" component={ModalWorkout} />
                     </div>
                 </InnerWrapper>
             </OuterWrapper>

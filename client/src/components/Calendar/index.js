@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import {Icon, TableHeaderCell, Table, Header, Segment } from 'semantic-ui-react';
+import {Icon, TableHeaderCell, Table, Header, Segment, Modal } from 'semantic-ui-react';
 import styled from 'styled-components';
 import moment from 'moment';
-import { monthUtil } from '../../utils/dateUtil'
+import FormWorkout from '../FormWorkout'
+import ModalWorkout from '../ModalWorkout'
+import { monthUtil, padDate } from '../../utils/dateUtil'
 const daysOfWeek = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
 
 
@@ -35,9 +37,13 @@ class Calendar extends Component {
         super(props);
         this.state={
             month: moment().month(),
-            year: moment().year(),        
+            year: moment().year(), 
+            open: false       
         }
     }
+
+    open = () => this.setState({ open: true })
+    close = () => this.setState({ open: false })
 
     previousMonth = ()=>{
         if(this.state.month === 0){
@@ -79,7 +85,22 @@ class Calendar extends Component {
                     <Table.Row>
                         {week.map((day) => {
                             return(
-                                <Table.Cell>{day}</Table.Cell>
+                                <Modal 
+                                    trigger={<Table.Cell value={day}>
+                                            {day}
+                                            </Table.Cell>} 
+                                    style={{marginTop: "10%", marginLeft: "10%", marginRight: "10%"}}>
+                                    <Modal.Header>Log Workout</Modal.Header>
+                                        <Modal.Content image>
+                                        <Modal.Description>
+                                            <Header></Header>
+                                                <FormWorkout 
+                                                    thisDay={padDate(day.toString())} 
+                                                    thisMonth={padDate((this.state.month + 1).toString())} 
+                                                    thisYear={this.state.year}/>
+                                        </Modal.Description>
+                                        </Modal.Content>
+                                </Modal>
                             );
                         })}
                     </Table.Row>

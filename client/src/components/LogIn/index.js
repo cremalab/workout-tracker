@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { updateUser } from '../../state/actions/updateUser'
 import { bindActionCreators } from 'redux'
+import { Segment, Button, Divider, Form } from 'semantic-ui-react'
 
 class LogIn extends Component {
     constructor(props){
@@ -20,25 +21,34 @@ class LogIn extends Component {
       } 
       return (
         <div>     
-            Log In <br/>
-            <form>
-              <input
-                type="email"
-                name="logInEmail"
-                placeholder="Email"
-                value={this.state.logInEmail}
-                onChange={this.handleChange}/><br/> 
-               <input
-                type="password"
-                name="logInPassword"
-                placeholder="Password"
-                value={this.state.logInPassword}
-                onChange={this.handleChange}/><br/>
-              <input 
-                type="submit" 
-                value="Submit" 
-                onClick={this.handleSubmit}/>
-            </form> 
+          <Segment padded width={8}>
+            <Form>
+              <Form.Field>
+                <label>Email</label>
+                <input
+                  type="email"
+                  name="logInEmail"
+                  placeholder="Email"
+                  value={this.state.logInEmail}
+                  onChange={this.handleChange}/>
+              </Form.Field>
+              <Form.Field>
+                <label>Password</label>
+                <input
+                  type="password"
+                  name="logInPassword"
+                  placeholder="Password"
+                  value={this.state.logInPassword}
+                  onChange={this.handleChange}/>
+              </Form.Field>
+            </Form><br/>
+            <Button secondary fluid
+              type="submit" 
+              value="Submit" 
+              onClick={this.handleSubmit}>
+              Log In
+            </Button>
+          </Segment>
         </div>
       );
     }
@@ -48,6 +58,7 @@ class LogIn extends Component {
     }
     handleSubmit = (event) => {
         const { logInEmail, logInPassword } = this.state;
+        event.preventDefault();
         fetch("/api/users/login",{
           method: 'POST',
           body: JSON.stringify({

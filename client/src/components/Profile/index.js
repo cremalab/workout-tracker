@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import { Button, Form } from 'semantic-ui-react'
 import {Image, Video, Transformation, CloudinaryContext } from 'cloudinary-react';
+import { connect } from 'react-redux'
+import { updateUser } from '../../state/actions/updateUser'
+import { bindActionCreators } from 'redux'
 
 class Profile extends Component {
     constructor(props){
@@ -10,12 +13,43 @@ class Profile extends Component {
         }
     }
 
+    componentDidMount(){
+        // this.props.dispatch({
+        //     type: types.PROFILE__REQUESTED,
+        //     payload: {
+        //       userId: this.props.pageState.auth.id
+        //     }
+        // });
+        //send user id as paylod, get profilePicId back
+        let url = '/api/users/profile/' + this.props.user.email
+        fetch(url, {
+            method: 'GET',
+            data: {
+                user: this.props.user
+            },
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content': 'application/json'
+            }
+        }).then(response => {
+            //console.log(response)
+            return response.json()
+            //console.log(this.props.user)
+        }).then(data => {
+            console.log(data)
+            this.setState({profilePicId: data.profilePicId })
+        })
+        
+        //this.setState({profilePicId: })
+    }
+
     render(){
         return(
             <Form>
                 <Form.Group>
                     <Image cloudName="workout-tracker" 
-                            publicId={this.state.profilePicId} 
+                    // user.profilepicid ||
+                            publicId={ this.state.profilePicId} 
                             width="100" crop="scale" 
                             onClick={this.handleImageUpload}
                             style={{cursor : "pointer"}}/>
@@ -59,32 +93,44 @@ class Profile extends Component {
                     </Form.Field>
                 </Form.Group>
                 <Button type='submit'>Save</Button>
+
             </Form>
         )
     }
 
     handleImageUpload= () => {
-        console.log('image')
         window.cloudinary.openUploadWidget({ cloud_name: 'workout-tracker', upload_preset: 'engrhael'}, 
             (error, result) => { 
-                console.log(error, result); 
                 if (error) {
                     throw error
                 } else if (result[0]){
-                    this.setState({profilePicId: result[0].public_id})   
+                    this.setState({profilePicId: result[0].public_id})
+                    //update redux state with user profile pic - does this need to be stored in redux? 
+                    //could pull from DB instead   
+                    this.props.updateUser(this.props.user.email, result[0].public_id)
+                    //needs to send user email so mongo knows which record to update. Get this from redux state?
+                    //get email from redux state?
+                    fetch('/api/users/profile',{
+                        method: 'POST',
+                        body: JSON.stringify({
+                            user: this.props.user,
+                            result
+                        }),
+                        headers: {
+                            'Accept': 'application/json, text/plain, */*',
+                            'Content': 'application/json'
+                        }
+                    }).then(response => {response.json()}) 
                 } 
         });
-        // fetch('/api/users/profile',{
-        //     method: 'POST',
-        //     body: JSON.stringify({
-        //         result
-        //     }),
-        //     headers: {
-        //     'Accept': 'application/json, text/plain, */*',
-        //     'Content': 'application/json'
-        //     }
-        // }).then(response => response.json()) 
+        
     }
 }
 
-export default Profile;
+const mapStateToProps = (state) =>{
+    return {
+        user: state.user
+    }
+}
+
+export default connect(mapStateToProps, { updateUser })(Profile);

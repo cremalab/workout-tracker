@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import './App.css';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux'
+import { updateUser } from '../../state/actions/updateUser'
+import { bindActionCreators } from 'redux'
 
 class App extends Component {
   constructor(props){
@@ -67,7 +70,15 @@ class App extends Component {
           'Content': 'application/json'
         }
       }).then(response => response.json())
+      this.props.updateUser(signUpEmail, null)
     }
   }
 }
-export default App;
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+}
+
+export default connect(mapStateToProps, {updateUser})(App);

@@ -8,8 +8,7 @@ const UserSchema = new Schema({
   password: {type: String, toJSON: false, select: false},
   firstName: String,
   lastName: String,
-  image: String,
-  image_id: String
+  profilePicId: String
 }, {strict: false});
 
 UserSchema.plugin(passportLocalMongoose, { 

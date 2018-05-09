@@ -1,19 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Link} from 'react-router-dom';
-import registerServiceWorker from './registerServiceWorker';
-import 'semantic-ui-css/semantic.min.css';
-import './index.css';
-import styled from 'styled-components';
-import runnerImage from './assets/runner.jpg';
-import plateImage from './assets/plate.jpg';
-import App from './components/App/App';
-import Calendar from './components/Calendar';
-import LogIn from './components/LogIn';
-import Dashboard from './components/Dashboard';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import registerServiceWorker from './registerServiceWorker'
+import 'semantic-ui-css/semantic.min.css'
+import './index.css'
+import styled from 'styled-components'
 import NavBar from './components/NavBar';
+import plateImage from './assets/plate.jpg'
+import App from './components/App/App'
+import LogIn from './components/LogIn'
+import Dashboard from './components/Dashboard'
+import Calendar from './components/Calendar'
 import Profile from './components/Profile';
+import { Provider } from 'react-redux'
+import { createStore, applyMiddleware } from 'redux'
+import reducers from './state/reducers'
+import {composeWithDevTools} from 'redux-devtools-extension'
 
+const createStoreWithMiddleware = composeWithDevTools((applyMiddleware()))(createStore);
+const store=createStoreWithMiddleware(reducers);
 
 const OuterWrapper = styled.div`
     height: 100vh;
@@ -32,20 +37,22 @@ const InnerWrapper = styled.div`
 `;
 
 ReactDOM.render((
-    <Router>
-        <OuterWrapper>
-            <NavBar />
-            <InnerWrapper>
-                <div>
-                    <Route exact path="/" component={App} />
-                    <Route path="/calendar" component={Calendar} />
-                    <Route path="/login" component={LogIn} />
-                    <Route path="/dashboard" component={Dashboard} />
-                    <Route path="/profile" component={Profile} />
-                </div>
-            </InnerWrapper>
-        </OuterWrapper>
-    </Router>
+    <Provider store={store}>
+        <Router>
+            <OuterWrapper>
+                <NavBar />
+                <InnerWrapper>
+                    <div>
+                        <Route exact path="/" component={App} />
+                        <Route path="/login" component={LogIn} />
+                        <Route path="/dashboard" component={Dashboard} />
+                        <Route path="/calendar" component={Calendar} />
+                        <Route path="/profile" component={Profile} />
+                    </div>
+                </InnerWrapper>
+            </OuterWrapper>
+        </Router>
+    </Provider>
 ), document.getElementById('root'));
 
 registerServiceWorker();

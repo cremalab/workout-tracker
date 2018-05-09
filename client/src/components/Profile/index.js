@@ -8,39 +8,26 @@ import { bindActionCreators } from 'redux'
 class Profile extends Component {
     constructor(props){
         super(props);
-        this.state ={
-            profilePicId: "placeholder2"
-        }
     }
 
-    componentDidMount(){
-        // this.props.dispatch({
-        //     type: types.PROFILE__REQUESTED,
-        //     payload: {
-        //       userId: this.props.pageState.auth.id
-        //     }
-        // });
-        //send user id as paylod, get profilePicId back
-        let url = '/api/users/profile/' + this.props.user.email
-        fetch(url, {
-            method: 'GET',
-            data: {
-                user: this.props.user
-            },
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content': 'application/json'
-            }
-        }).then(response => {
-            //console.log(response)
-            return response.json()
-            //console.log(this.props.user)
-        }).then(data => {
-            console.log(data)
-            this.setState({profilePicId: data.profilePicId })
-        })
-        
-        //this.setState({profilePicId: })
+    componentWillMount(){
+        //If user "logged in" (right now just checking Redux state), 
+        //get profile pic from db and update redux state
+        if(this.props.user.email){
+            let url = '/api/users/profile/' + this.props.user.email
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content': 'application/json'
+                }
+            }).then(response => {
+                return response.json()
+            }).then(data => {
+                console.log(data)
+                this.props.updateUser(this.props.user.email, data.profilePicId)
+            })
+        }
     }
 
     render(){
@@ -48,8 +35,7 @@ class Profile extends Component {
             <Form>
                 <Form.Group>
                     <Image cloudName="workout-tracker" 
-                    // user.profilepicid ||
-                            publicId={ this.state.profilePicId} 
+                            publicId={this.props.user.profilePicId || 'placeholder2'} 
                             width="100" crop="scale" 
                             onClick={this.handleImageUpload}
                             style={{cursor : "pointer"}}/>
@@ -93,7 +79,6 @@ class Profile extends Component {
                     </Form.Field>
                 </Form.Group>
                 <Button type='submit'>Save</Button>
-
             </Form>
         )
     }
@@ -104,12 +89,10 @@ class Profile extends Component {
                 if (error) {
                     throw error
                 } else if (result[0]){
-                    this.setState({profilePicId: result[0].public_id})
                     //update redux state with user profile pic - does this need to be stored in redux? 
-                    //could pull from DB instead   
+                    //could pull from DB instead but GET request only in componentWillMount right now  
                     this.props.updateUser(this.props.user.email, result[0].public_id)
-                    //needs to send user email so mongo knows which record to update. Get this from redux state?
-                    //get email from redux state?
+                    //send email from redux state so that user can be found in db
                     fetch('/api/users/profile',{
                         method: 'POST',
                         body: JSON.stringify({
@@ -122,8 +105,7 @@ class Profile extends Component {
                         }
                     }).then(response => {response.json()}) 
                 } 
-        });
-        
+        });   
     }
 }
 

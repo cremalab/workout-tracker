@@ -71,7 +71,6 @@ module.exports = [
                     if (err) throw err
                 })
             })
-            //console.log(payload, payload.result[0].url, payload.result[0].public_id);
             return payload;  
         }
     },
@@ -80,14 +79,13 @@ module.exports = [
         path: '/api/users/profile/{email?}',
         handler: async(request, h) => {
             //Find user with that email and send pic to profile component
-            //console.log(request.params)
-            let {email} = request.params;
+            let { email } = request.params;
+            console.log('email: ' + email)
             let response = User.findOne({ email }, (err, user) => {
-                if (err) throw err
-                console.log(user.profilePicId)
+                if (err) return err;
                 return h.response(user.profilePicId);
             })
-            //console.log(payload, payload.result[0].url, payload.result[0].public_id);
+            console.log('respone: ' + response)
             return response;  
         }
     },

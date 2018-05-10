@@ -6,9 +6,15 @@ const mongoose = require('mongoose'),
 const UserSchema = new Schema({
   email: String,
   password: {type: String, toJSON: false, select: false},
+  profilePicId: String,
   firstName: String,
   lastName: String,
-  profilePicId: String
+  bio: String, 
+  age: Number, 
+  weight: Number, 
+  goalWeight: Number,  
+  gender: String, 
+  DOB: Date 
 }, {strict: false});
 
 UserSchema.plugin(passportLocalMongoose, { 

@@ -7,7 +7,7 @@ const User = require('../models/User'),
       _ = require('lodash');
 
 module.exports = [
-    {
+    {   //create new user document on Sign Up
         method: 'POST',
         path: '/api/users/',
         handler: async(request, h) => {
@@ -27,7 +27,7 @@ module.exports = [
             return user;  
         }
     },
-    {
+    {   //Authenticate user on Log In
         method: 'POST',
         path: '/api/users/login',
         options: {
@@ -58,11 +58,11 @@ module.exports = [
             }
        }
     },
-    {
+    {   //Save uploaded profile pic to user's document
         method: 'POST',
-        path: '/api/users/profile',
+        path: '/api/users/profilePic',
         handler: async(request, h) => {
-            var payload = JSON.parse(request.payload);
+            let payload = JSON.parse(request.payload);
             console.log(payload.user, payload.result[0].public_id)
             //Find user with email that's in redux state and update their profilePicId on DB
             User.findOne({email: payload.user.email}, (err, user) => {
@@ -74,9 +74,9 @@ module.exports = [
             return payload;  
         }
     },
-    {
+    {   //Retrieve profile pic for logged in user
         method: 'GET',
-        path: '/api/users/profile/{email?}',
+        path: '/api/users/profilePic/{email?}',
         handler: async(request, h) => {
             //Find user with that email and send pic to profile component
             let { email } = request.params;
@@ -89,11 +89,47 @@ module.exports = [
             return response;  
         }
     },
-    {
+    {   //Save user profile info
+        method: 'POST',
+        path: '/api/users/profile',
+        handler: async(request, h) => {
+            let payload = JSON.parse(request.payload);
+            //Find user with email that's in redux state and update their profile info on DB
+            User.findOne({email: payload.user.email}, (err, user) => {
+                user.firstName = payload.firstName, 
+                user.lastName = payload.lastName, 
+                user.bio = payload.bio, 
+                user.age = payload.age, 
+                user.weight = payload.weight, 
+                user.goalWeight = payload.goalWeight, 
+                user.gender = payload.gender, 
+                user.DOB = payload.DOB
+
+                user.save(err => {
+                    if (err) throw err
+                })
+            })
+            return payload;  
+        }
+    },
+    {   //Retrieve user profile info
+        method: 'GET',
+        path: '/api/users/profile/{email}',
+        handler: async(request, h) => {
+            //Find user with that email and send pic to profile component
+            let { email } = request.params;
+            let response = User.findOne({ email }, (err, user) => {
+                if (err) return err;
+                return h.response(user);
+            })
+            return response;  
+        }
+    },
+    {   //Save workout form data
         method: 'POST',
         path: '/api/workout/save',
         handler: async (request, h) => {
-            var payload = JSON.parse(request.payload);
+            let payload = JSON.parse(request.payload);
             console.log(payload)
             const workout = new Workout({
                 workout: payload.formData

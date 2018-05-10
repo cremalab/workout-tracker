@@ -20,31 +20,6 @@ class App extends Component {
   render() {
     return (
       <div>   
-          {/* Sign Up <br/>
-          <form>
-            <input
-              type="email"
-              name="signUpEmail"
-              placeholder="Email"
-              value={this.state.signUpEmail}
-              onChange={this.handleChange}/><br/> 
-             <input
-              type="password"
-              name="signUpPassword"
-              placeholder="Password"
-              value={this.state.signUpPassword}
-              onChange={this.handleChange}/><br/>
-            <input
-              type="password"
-              name="signUpPasswordConfirm"
-              placeholder="Confirm Password"
-              value={this.state.signUpPasswordConfirm}
-              onChange={this.handleChange}/><br/>  
-            <input 
-              type="submit" 
-              value="Submit" 
-              onClick={this.handleSubmit}/>
-          </form>  */}
           <Segment padded width={8}>
             <Form>
               <Form.Field>

@@ -4,6 +4,7 @@ import {Image, Video, Transformation, CloudinaryContext } from 'cloudinary-react
 import { connect } from 'react-redux'
 import { updateUser } from '../../state/actions/updateUser'
 import { bindActionCreators } from 'redux'
+import _ from 'lodash'
 
 class Profile extends Component {
     constructor(props){
@@ -20,10 +21,11 @@ class Profile extends Component {
         }
     }
 
-    componentWillMount(){
+    componentDidMount(){
         //If user "logged in" (right now just checking Redux state), 
         //get profile pic from db and update redux state
         if(this.props.user.email){
+            //Retrieve profilePic
             let url = '/api/users/profilePic/' + this.props.user.email
             fetch(url, {
                 method: 'GET',
@@ -35,6 +37,29 @@ class Profile extends Component {
                 return response.json()
             }).then(data => {
                 this.props.updateUser(this.props.user.email, data.profilePicId)
+            })
+
+            //Retrieve profile data
+            let url2 = '/api/users/profile/' + this.props.user.email
+            fetch(url2, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content': 'application/json'
+                }
+            }).then(response => {
+                return response.json()
+            }).then(data => {
+                this.setState({
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    bio: data.bio,
+                    age: data.age,
+                    weight: data.weight,
+                    goalWeight: data.goalWeight,
+                    gender: data.gender,
+                    DOB: data.DOB
+                })
             })
         }
     }
@@ -54,7 +79,7 @@ class Profile extends Component {
                     <label>First Name</label>
                     <input 
                         name='firstName'
-                        placeholder='First Name'
+                        placeholder={this.state.firstName || 'First Name'}
                         value={this.state.firstName}
                         onChange={this.handleChange} />
                     </Form.Field>
@@ -62,8 +87,8 @@ class Profile extends Component {
                     <label>Last Name</label>
                     <input 
                         name='lastName'
-                        placeholder='Last Name'
-                        value={this.state.lasttName}
+                        placeholder={this.state.lastName || 'Last Name'}
+                        value={this.state.lastName}
                         onChange={this.handleChange} />
                     </Form.Field>
                 </Form.Group>
@@ -71,7 +96,7 @@ class Profile extends Component {
                 <label>Bio</label>
                 <input 
                     name='bio'
-                    placeholder='Bio'
+                    placeholder={this.state.bio || 'Bio'}
                     value={this.state.bio}
                     onChange={this.handleChange} />
                 </Form.Field>
@@ -80,7 +105,7 @@ class Profile extends Component {
                     <label>Age</label>
                     <input 
                         name='age'
-                        placeholder='Age'
+                        placeholder={this.state.age || 'Age'}
                         value={this.state.age}
                         onChange={this.handleChange} />
                     </Form.Field>
@@ -88,7 +113,7 @@ class Profile extends Component {
                     <label>Weight</label>
                     <input 
                         name='weight'
-                        placeholder='Weight'
+                        placeholder={this.state.weight || 'Weight'}
                         value={this.state.weight}
                         onChange={this.handleChange} />
                     </Form.Field>
@@ -96,7 +121,7 @@ class Profile extends Component {
                     <label>Goal Weight</label>
                     <input 
                         name='goalWeight'
-                        placeholder='Goal Weight'
+                        placeholder={this.state.goalWeight || 'Goal Weight'}
                         value={this.state.goalWeight}
                         onChange={this.handleChange} />
                     </Form.Field>
@@ -106,15 +131,16 @@ class Profile extends Component {
                     <label>Gender</label>
                     <input 
                         name='gender'
-                        placeholder='Gender'
+                        placeholder={this.state.gender ||'Gender'}
                         value={this.state.gender}
                         onChange={this.handleChange} />
                     </Form.Field>
                     <Form.Field>
                     <label>Date Of Birth</label>
                     <input 
+                        type='date'
                         name='DOB'
-                        placeholder='Date of Birth'
+                        placeholder={this.state.DOB || 'Date of Birth'}
                         value={this.state.DOB}
                         onChange={this.handleChange} />
                     </Form.Field>

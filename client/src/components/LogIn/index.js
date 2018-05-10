@@ -82,7 +82,7 @@ class LogIn extends Component {
     }
     handleSuccessfulLogin = () => {
       this.setState({ authenticated: true});
-      this.props.updateUser(this.state.logInEmail, null)
+      this.props.updateUser(this.state.logInEmail)
     }
     handleUnsuccessfulLogin = () => {
       this.setState({ authenticated: false});

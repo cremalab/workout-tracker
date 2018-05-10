@@ -4,10 +4,8 @@ export default function(state = {}, action){
     switch(action.type){
         case 'UPDATE_USER':
             return {...state,
-                     // [action.payload.email]: {
-                          email: action.payload.email,
-                          profilePicId: action.payload.profilePicId
-                     // }
+                        email: action.payload.email,
+                        profilePicId: action.payload.profilePicId,
                     }
         default:
             return state

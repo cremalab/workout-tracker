@@ -78,7 +78,7 @@ module.exports = [
         method: 'GET',
         path: '/api/users/profilePic/{email?}',
         handler: async(request, h) => {
-            //Find user with that email and send pic to profile component
+            //Find user with that email and return profilePicId
             let { email } = request.params;
             console.log('email: ' + email)
             let response = User.findOne({ email }, (err, user) => {
@@ -116,7 +116,7 @@ module.exports = [
         method: 'GET',
         path: '/api/users/profile/{email}',
         handler: async(request, h) => {
-            //Find user with that email and send pic to profile component
+            //Find user with email that's in redux state and return user document
             let { email } = request.params;
             let response = User.findOne({ email }, (err, user) => {
                 if (err) return err;

@@ -95,6 +95,7 @@ class App extends Component {
       event.target.setCustomValidity('Passwords must match');
     } else {
       event.target.setCustomValidity('');
+      //Add user to DB
       fetch('/api/users/',{
         method: 'POST',
         body: JSON.stringify({
@@ -106,6 +107,22 @@ class App extends Component {
           'Content': 'application/json'
         }
       }).then(response => response.json())
+
+      //Send user welcome email on signup
+      fetch('/v3/mail/send',{
+        method: 'POST',
+        body: JSON.stringify({
+          to: signUpEmail,
+          from: 'workout-tracker@example.com',
+          subject: 'Welcome!',
+          text: 'We\'re excited to be part of your fitness journey',
+        }),
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content': 'application/json',
+          'Access-Control-Allow-Origin':'https://sendgrid*',
+        }
+      })
     }
   }
 }

@@ -4,6 +4,7 @@
   "private": true,
   "proxy": "http://localhost:5000",
   "dependencies": {
+    "@sendgrid/mail": "^6.2.1",
     "axios": "^0.18.0",
     "hapi": "^17.3.1",
     "inert": "^5.1.0",

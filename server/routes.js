@@ -4,7 +4,10 @@ const User = require('../models/User'),
       Workout = require('../models/Workout'),
       Joi = require('joi'),
       HapiAuthCookie = require('hapi-auth-cookie'),
-      _ = require('lodash');
+      _ = require('lodash'),
+      sgMail = require('@sendgrid/mail');
+      sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
 
 module.exports = [
     {
@@ -74,5 +77,14 @@ module.exports = [
             return payload;
         }
 
+    },
+    {
+        method: 'POST',
+        path: '/v3/mail/send',
+        handler: async (request, h) => {
+            let payload = JSON.parse(request.payload);
+            sgMail.send(payload);
+            return payload;
+        }
     }
 ];

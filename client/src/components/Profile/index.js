@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Form } from 'semantic-ui-react'
-import {Image, Video, Transformation, CloudinaryContext } from 'cloudinary-react';
+import { Image, Video, Transformation, CloudinaryContext } from 'cloudinary-react';
 import { connect } from 'react-redux'
 import { updateUser } from '../../state/actions/updateUser'
 import { bindActionCreators } from 'redux'
@@ -10,6 +10,7 @@ class Profile extends Component {
     constructor(props){
         super(props);
         this.state = {
+            profilePicId: '',
             firstName: '',
             lastName: '',
             bio: '',
@@ -21,7 +22,7 @@ class Profile extends Component {
         }
     }
 
-    componentDidMount(){
+    componentWillMount(){
         //If user "logged in" (right now just checking Redux state), 
         //get profile pic from db and update redux state
         if(this.props.user.email){
@@ -36,7 +37,7 @@ class Profile extends Component {
             }).then(response => {
                 return response.json()
             }).then(data => {
-                this.props.updateUser(this.props.user.email, data.profilePicId)
+                this.setState({ profilePicId: data.profilePicId })
             })
 
             //Retrieve profile data
@@ -51,6 +52,7 @@ class Profile extends Component {
                 return response.json()
             }).then(data => {
                 this.setState({
+                    profilePicId: data.profilePicId,
                     firstName: data.firstName,
                     lastName: data.lastName,
                     bio: data.bio,
@@ -65,14 +67,17 @@ class Profile extends Component {
     }
 
     render(){
+        const hasProfilePic = this.state.firstName
+        const deleteProfilePic = hasProfilePic ? (<p>Delete Picture</p>) : (<p>hi</p>);
         return(
             <Form>
                 <Form.Group>
                     <Image cloudName='workout-tracker' 
-                            publicId={this.props.user.profilePicId || 'placeholder2'} 
+                            publicId={this.state.profilePicId || 'placeholder2'} 
                             width='100' crop='scale' 
                             onClick={this.handleImageUpload}
                             style={{cursor : 'pointer'}}/>
+                    {deleteProfilePic}
                 </Form.Group>
                 <Form.Group widths='equal'>
                     <Form.Field>
@@ -158,7 +163,8 @@ class Profile extends Component {
                 } else if (result[0]){
                     //update redux state with user profile pic - does this need to be stored in redux? 
                     //could pull from DB instead but GET request only in componentWillMount right now  
-                    this.props.updateUser(this.props.user.email, result[0].public_id)
+                    //this.props.updateUser(this.props.user.email, result[0].public_id)
+                    this.setState({ profilePicId: result[0].public_id })
                     //send email from redux state so that user can be found in db
                     fetch('/api/users/profilePic',{
                         method: 'POST',
@@ -180,11 +186,12 @@ class Profile extends Component {
     }
 
     handleSubmit=(event)=>{
-        const { firstName, lastName, bio, age, weight, goalWeight, gender, DOB } = this.state
+        const { profilePicId, firstName, lastName, bio, age, weight, goalWeight, gender, DOB } = this.state
         fetch('/api/users/profile',{
             method: 'POST',
             body: JSON.stringify({
                 user: this.props.user,
+                profilePicId,
                 firstName, 
                 lastName, 
                 bio, 

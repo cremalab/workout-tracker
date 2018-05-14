@@ -14,7 +14,7 @@ const UserSchema = new Schema({
   weight: Number, 
   goalWeight: Number,  
   gender: String, 
-  DOB: Date 
+  DOB: String,
 }, {strict: false});
 
 UserSchema.plugin(passportLocalMongoose, { 

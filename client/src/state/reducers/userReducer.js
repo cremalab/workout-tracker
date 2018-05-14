@@ -5,7 +5,7 @@ export default function(state = {}, action){
         case 'UPDATE_USER':
             return {...state,
                         email: action.payload.email,
-                        profilePicId: action.payload.profilePicId,
+                        // profilePicId: action.payload.profilePicId,
                     }
         default:
             return state

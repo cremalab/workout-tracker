@@ -96,6 +96,7 @@ module.exports = [
             let payload = JSON.parse(request.payload);
             //Find user with email that's in redux state and update their profile info on DB
             User.findOne({email: payload.user.email}, (err, user) => {
+                user.profilePicId = payload.profilePicId,
                 user.firstName = payload.firstName, 
                 user.lastName = payload.lastName, 
                 user.bio = payload.bio, 

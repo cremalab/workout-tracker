@@ -67,8 +67,15 @@ class Profile extends Component {
     }
 
     render(){
-        const hasProfilePic = this.state.firstName
-        const deleteProfilePic = hasProfilePic ? (<p>Delete Picture</p>) : (<p>hi</p>);
+        const hasProfilePic = this.state.profilePicId
+        const deleteProfilePic = hasProfilePic ? (
+            <span
+                style={{cursor : 'pointer', color: 'white'}}
+                onClick={this.handleDeletePic}>Delete Picture
+            </span>
+        ) : (
+            <p></p>
+        );
         return(
             <Form>
                 <Form.Group>
@@ -76,9 +83,9 @@ class Profile extends Component {
                             publicId={this.state.profilePicId || 'placeholder2'} 
                             width='100' crop='scale' 
                             onClick={this.handleImageUpload}
-                            style={{cursor : 'pointer'}}/>
-                    {deleteProfilePic}
+                            style={{cursor : 'pointer'}}/>     
                 </Form.Group>
+                {deleteProfilePic}
                 <Form.Group widths='equal'>
                     <Form.Field>
                     <label>First Name</label>
@@ -160,9 +167,7 @@ class Profile extends Component {
             (error, result) => { 
                 if (error) {
                     throw error
-                } else if (result[0]){
-                    //update redux state with user profile pic - does this need to be stored in redux? 
-                    //could pull from DB instead but GET request only in componentWillMount right now  
+                } else if (result[0]){ 
                     //this.props.updateUser(this.props.user.email, result[0].public_id)
                     this.setState({ profilePicId: result[0].public_id })
                     //send email from redux state so that user can be found in db
@@ -185,7 +190,7 @@ class Profile extends Component {
         this.setState({[event.target.name]: event.target.value})
     }
 
-    handleSubmit=(event)=>{
+    handleSubmit = (event) =>{
         const { profilePicId, firstName, lastName, bio, age, weight, goalWeight, gender, DOB } = this.state
         fetch('/api/users/profile',{
             method: 'POST',
@@ -206,6 +211,25 @@ class Profile extends Component {
               'Content': 'application/json'
             }
           }).then(response => response.json())
+    }
+
+    handleDeletePic = () =>{
+        let url = '/api/users/profilePic/' + this.props.user.email
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content': 'application/json'
+            }
+        }).then(response => {
+            return response.json()
+        }).then(data => {
+            console.log(data)
+            this.setState({
+                profilePicId: data.profilePicId,
+            })
+            console.log(this.state.profilePicId)
+        })
     }
 }
 

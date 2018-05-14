@@ -76,16 +76,28 @@ module.exports = [
     },
     {   //Retrieve profile pic for logged in user
         method: 'GET',
-        path: '/api/users/profilePic/{email?}',
+        path: '/api/users/profilePic/{email}',
         handler: async(request, h) => {
             //Find user with that email and return profilePicId
             let { email } = request.params;
-            console.log('email: ' + email)
             let response = User.findOne({ email }, (err, user) => {
                 if (err) return err;
                 return h.response(user.profilePicId);
             })
-            console.log('respone: ' + response)
+            return response;  
+        }
+    },
+    {   //Delete profile pic
+        method: 'POST',
+        path: '/api/users/profilePic/{email}',
+        handler: async(request, h) => {
+            //Find user with that email and return profilePicId
+            let { email } = request.params;
+            let response = User.findOneAndUpdate({ email }, { profilePicId: null }, (err, user) => {
+                if (err) return err;
+                console.log(user)
+                return h.response(user.profilePicId);
+            })
             return response;  
         }
     },

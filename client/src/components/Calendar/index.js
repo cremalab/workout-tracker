@@ -85,22 +85,13 @@ class Calendar extends Component {
                     <Table.Row>
                         {week.map((day) => {
                             return(
-                                <Modal 
+                                <ModalWorkout 
                                     trigger={<Table.Cell value={day}>
-                                            {day}
-                                            </Table.Cell>} 
-                                    style={{marginTop: "10%", marginLeft: "10%", marginRight: "10%"}}>
-                                    <Modal.Header>Log Workout</Modal.Header>
-                                        <Modal.Content image>
-                                        <Modal.Description>
-                                            <Header></Header>
-                                                <FormWorkout 
-                                                    thisDay={padDate(day.toString())} 
-                                                    thisMonth={padDate((this.state.month + 1).toString())} 
-                                                    thisYear={this.state.year}/>
-                                        </Modal.Description>
-                                        </Modal.Content>
-                                </Modal>
+                                                {day}
+                                            </Table.Cell>}
+                                    thisDay={padDate(day.toString())} 
+                                    thisMonth={padDate((this.state.month + 1).toString())} 
+                                    thisYear={this.state.year}/>
                             );
                         })}
                     </Table.Row>

@@ -17,8 +17,8 @@ class FormWorkout extends Component {
 
   render() {
     return (
-      <Form onSubmit={() => this.handleSubmit(this.props.formData)}>
-        <Form.Group widths='equal'>
+      <Form>
+        <Form.Group>
             <SearchBar />
             <Form.Field>
               <input type='date' defaultValue={this.state.date}/>
@@ -29,12 +29,14 @@ class FormWorkout extends Component {
           <ListAvailableExercises/>
         </Form.Group>
         <Form.Field 
+         type='button'
           control={Button}
-          onClick={console.log(this.props.handleClose)}>
+          onClick={() => this.handleSubmit(this.props.formData)}>
           Save</Form.Field>
       </Form>
     )
   }
+
   handleSubmit(formData){
     fetch("/api/workout/save",{
       method: 'POST',
@@ -45,9 +47,9 @@ class FormWorkout extends Component {
           'Accept': 'application/json, */*',
           'Content': 'application/json',
       }
-      }).then(response => {
-        //console.log(response);
-      })
+      }).then(
+        this.props.handleClose
+      )
       .catch(err => console.log('Error: ' + err))
   }
 }

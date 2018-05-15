@@ -13,12 +13,13 @@ class ModalWorkout extends Component {
 
     open = () => this.setState({ open: true })
     close = () => this.setState({ open: false })
-   
+    
     render(){
         const { open } = this.state
+        let trigger = this.props.trigger || <Button>+</Button>
         return(
             <Modal 
-                trigger={<Button>+</Button>} 
+                trigger={trigger} 
                 style={{marginTop: "10%", marginLeft: "10%", marginRight: "10%"}}
                 open={open}
                 onOpen={this.open}
@@ -27,7 +28,11 @@ class ModalWorkout extends Component {
                 <Modal.Content image>
                     <Modal.Description>
                         <Header></Header>
-                            <FormWorkout handleClose={this.close}/>
+                            <FormWorkout 
+                                handleClose={this.close}
+                                thisDay={this.props.thisDay} 
+                                thisMonth={this.props.thisMonth} 
+                                thisYear={this.props.thisYear}/>
                     </Modal.Description>
                 </Modal.Content>
             </Modal>

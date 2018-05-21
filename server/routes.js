@@ -143,16 +143,16 @@ module.exports = [
         path: '/api/workout/save',
         handler: async (request, h) => {
             let payload = JSON.parse(request.payload);
-            let userId =''
-            let currentUser = User.findOne({email: payload.user.email},'_id' ,(err, user) =>{
+            let currentUser = User.findOne({email: payload.user.email}, '_id' ,(err, user) =>{
                 if(err) return err;
-                userId = user._id
-                console.log(user._id)
+                let userId = user._id.toString()
+                return user._id
             })
-            .then( () =>{
+            .then((userId) =>{
                 const workout = new Workout({
-                    user: userId,
-                    workout: payload.formData
+                    userId,
+                    workout: payload.formData,
+                    date: payload.date
                 })
                 workout.save((err) => {
                     if (err) {console.log(err); return err}
@@ -160,7 +160,6 @@ module.exports = [
                 });
             })
             
-           
             return payload;
         }
     }

@@ -21,7 +21,9 @@ class FormWorkout extends Component {
         <Form.Group widths='equal'>
             <SearchBar />
             <Form.Field>
-              <input type='date' defaultValue={this.state.date}/>
+              <input 
+                type='date' 
+                defaultValue={this.state.date}/>
             </Form.Field>
         </Form.Group>
         <Form.Group inline>
@@ -40,6 +42,7 @@ class FormWorkout extends Component {
       method: 'POST',
       body: JSON.stringify({
         user: this.props.user,
+        date: this.state.date,
         formData
       }),
       headers: {

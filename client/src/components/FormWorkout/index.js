@@ -39,6 +39,7 @@ class FormWorkout extends Component {
     fetch("/api/workout/save",{
       method: 'POST',
       body: JSON.stringify({
+        user: this.props.user,
         formData
       }),
       headers: {
@@ -54,7 +55,8 @@ class FormWorkout extends Component {
 
 const mapStateToProps = (state) =>{
   return{
-    formData: state.activeExercises
+    formData: state.activeExercises,
+    user: state.user
   }
 }
 

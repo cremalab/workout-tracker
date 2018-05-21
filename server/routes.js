@@ -143,14 +143,24 @@ module.exports = [
         path: '/api/workout/save',
         handler: async (request, h) => {
             let payload = JSON.parse(request.payload);
-            console.log(payload)
-            const workout = new Workout({
-                workout: payload.formData
+            let userId =''
+            let currentUser = User.findOne({email: payload.user.email},'_id' ,(err, user) =>{
+                if(err) return err;
+                userId = user._id
+                console.log(user._id)
             })
-            workout.save((err) => {
-                if(err) {console.log(err); return err}
-                console.log('saved')
-            });
+            .then( () =>{
+                const workout = new Workout({
+                    user: userId,
+                    workout: payload.formData
+                })
+                workout.save((err) => {
+                    if (err) {console.log(err); return err}
+                    console.log('saved')
+                });
+            })
+            
+           
             return payload;
         }
     }

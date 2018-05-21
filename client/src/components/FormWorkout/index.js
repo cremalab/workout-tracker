@@ -26,7 +26,7 @@ class FormWorkout extends Component {
         </Form.Group>
         <Form.Group inline>
           <ListSelectedExercises />
-          <ListAvailableExercises/>
+          <ListAvailableExercises />
         </Form.Group>
         <Form.Field 
           control={Button}

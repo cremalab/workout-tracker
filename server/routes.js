@@ -74,5 +74,19 @@ module.exports = [
             return payload;
         }
 
+    },
+    {   //Retrieve logged workouts
+        method: 'POST',
+        path: '/api/workout/{email}',
+        handler: async (request, h) => {
+            //Find user with email that's in redux state and return user document
+            let { email } = request.params;
+            let response = Workout.findOne({ email }, (err, user) => {
+                if (err) return err;
+                return h.response(user);
+            })
+            return response;  
+        }
+
     }
 ];

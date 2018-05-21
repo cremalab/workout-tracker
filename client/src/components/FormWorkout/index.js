@@ -39,7 +39,7 @@ class FormWorkout extends Component {
     fetch("/api/workout/save",{
       method: 'POST',
       body: JSON.stringify({
-        formData
+        formData,
       }),
       headers: {
           'Accept': 'application/json, */*',

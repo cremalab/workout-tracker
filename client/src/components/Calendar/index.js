@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import {Icon, TableHeaderCell, Table, Header, Segment, Modal } from 'semantic-ui-react';
+import {Icon, Table, Header, Segment, Modal } from 'semantic-ui-react';
 import styled from 'styled-components';
 import moment from 'moment';
 import FormWorkout from '../FormWorkout'
 import ModalWorkout from '../ModalWorkout'
-import { monthUtil, padDate } from '../../utils/dateUtil'
-const daysOfWeek = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
-
+import ButtonGroup from '../ButtonGroup'
+import { monthUtil, padDate, daysOfWeek } from '../../utils/dateUtil'
 
 const HeaderWrapper = styled.div`
     height: 80px;
@@ -112,6 +111,7 @@ class Calendar extends Component {
     render(){
         return(
             <div>
+                <ButtonGroup />
                 <HeaderWrapper>
                     <Header floated='left' style={HeaderArrow}>
                         <Icon name="arrow left" size="big" onClick={this.previousMonth}/>

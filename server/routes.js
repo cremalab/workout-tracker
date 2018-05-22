@@ -76,15 +76,15 @@ module.exports = [
 
     },
     {   //Retrieve logged workouts
-        method: 'POST',
-        path: '/api/workout/{email}',
+        method: 'GET',
+        path: '/api/workout/{email}/{startDate}',
         handler: async (request, h) => {
-            //Find user with email that's in redux state and return user document
-            let { email } = request.params;
-            let response = Workout.findOne({ email }, (err, user) => {
+            //Find user with email that's in redux state and return user workouts
+            let { email, startDate } = request.params;
+            let response = Workout.findOne({ userEmail: email }, (err, user) => {
                 if (err) return err;
-                return h.response(user);
-            })
+                return user
+            }).where("date").gte(startDate)
             return response;  
         }
 

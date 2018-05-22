@@ -51,9 +51,9 @@ class CalendarWeek extends Component {
 
     fetchWorkouts = () =>{
         //fetch api call to look thru saved workouts for this user
-        //if there is a date that falls in selected date, return it
+        //if there is a date that falls in week range, return it
         //build up array for each day of week that way this is reusable for day view
-        let url = '/api/workout/' + this.props.user.email
+        let url = `/api/workout/${this.props.user.email}/${this.state.startDate}`
         fetch(url, {
             method: 'GET',
             headers: {

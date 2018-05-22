@@ -80,11 +80,12 @@ module.exports = [
         path: '/api/workout/{email}/{startDate}',
         handler: async (request, h) => {
             //Find user with email that's in redux state and return user workouts
+            //start date here in long format
             let { email, startDate } = request.params;
-            let response = Workout.findOne({ userEmail: email }, (err, user) => {
-                if (err) return err;
-                return user
-            }).where("date").gte(startDate)
+            let response = Workout.find({ userEmail: email })
+                .where("date").gte(startDate)
+                //.exec((err, workouts) =>{})
+            console.log(startDate)
             return response;  
         }
 

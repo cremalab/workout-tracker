@@ -11,12 +11,77 @@ class CalendarWeek extends Component {
         super(props)
         this.state = {
             startDate: moment().startOf('week'),
-            endDate: moment().endOf('week').format("MM/DD/YYYY")
+            //endDate: moment().endOf('week').format("MM/DD/YYYY"),
+            thisWeekWorkout: ''
         }
+        let url = `/api/workout/eva@gmail.com/${this.state.startDate}`
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content': 'application/json'
+            }
+        })
+        .then(response => {
+            return response.json()
+        })
+        .then((data) => {
+            this.setState({thisWeekWorkout: data})
+        })
+    }
+
+    renderHeaderRow = () =>{
+        const { startDate } = this.state
+        return (
+            weekDateArray(startDate).map((day) =>{
+                return <Table.HeaderCell>{day}</Table.HeaderCell>
+            })
+        )
+    }
+
+    renderWorkouts = () =>{
+        const { startDate, thisWeekWorkout } = this.state;
+        let week = weekDateArray(startDate)
+        let myWerk = [{ date: "Sun 20", name:"Hike" }, { date: "Mon 21", name: "Zumba" }]
+        let result = myWerk.find( day => day.date==="Sun 20")
+        console.log(result)
+        return (
+            //loop through array of each day that has workout
+            thisWeekWorkout.map((workout) => {
+                console.log('workout.date: ' + workout.date)
+                //loop through workout object to get name of each exercise logged
+               return (
+                    Object.values(workout.workout).map((exercise) =>{
+                        return <Table.Cell>{exercise.exerciseName}</Table.Cell>
+                    })
+                )
+            })
+        )
+    }
+
+    renderWorkoutDay = () =>{
+        //for now, assume just one 
+        //return one cell (within only that specific day column) for each movement
+        return (
+            <Table.Row>
+                <Table.Cell></Table.Cell>
+            </Table.Row>
+            //Will be looping so could essentially return multiple 
+            //for multiple movements that day
+            // <Table.Row>
+            //     <Table.Cell></Table.Cell>
+            // </Table.Row>
+        )
+    }
+
+    renderWorkoutWeek = () =>{
+        //return all columns renderWorkoutDay * 7
+        //if undefined, return nothing
     }
 
     render() {
-        const { startDate, endDate } = this.state
+        const { thisWeekWorkout } = this.state
+        if(!thisWeekWorkout.length) return null
         return (
             <div>
                 <ButtonGroup />
@@ -34,13 +99,12 @@ class CalendarWeek extends Component {
                 <Table celled unstackable>
                     <Table.Header>
                         <Table.Row>
-                          {weekDateArray(startDate).map((day) =>{
-                               return <Table.HeaderCell>{day}</Table.HeaderCell>
-                          })}
+                            {this.renderHeaderRow()}
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
                         <Table.Row>
+                            {/* needs to somehow iterate over cells, knowing where to place */}
                             {this.renderWorkouts()}
                         </Table.Row>
                     </Table.Body>
@@ -48,38 +112,6 @@ class CalendarWeek extends Component {
             </div>
         );
     }
-
-    fetchWorkouts = () =>{
-        //fetch api call to look thru saved workouts for this user
-        //if there is a date that falls in week range, return it
-        //build up array for each day of week that way this is reusable for day view
-        let url = `/api/workout/${this.props.user.email}/${this.state.startDate}`
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content': 'application/json'
-            }
-        }).then(response => {
-            return response.json()
-        }).then(data => {
-            // this.setState({ profilePicId: data.profilePicId })
-            //build up workout array for this user/week
-            let thisWeekWorkout = [{name: 'Run'}, {name: 'Bike'}]
-            this.renderWorkouts(thisWeekWorkout)
-        })
-
-    }
-
-    renderWorkouts = () =>{
-        let thisWeekWorkout = [{name: 'Run'}, {name: 'Bike'}]
-        return (
-            thisWeekWorkout.map((workout) => {
-                return <Table.Cell>{workout.name}</Table.Cell>
-            })
-        )
-    }
-
 }
 const HeaderWrapper = styled.div`
     height: 80px;
@@ -99,7 +131,6 @@ const Title = styled.span`
     font-size: 3em;
     color: #FA8072;
     text-align: center;
-    
     margin-top: 5%;
     font-weight: bold;
     text-transform: uppercase;

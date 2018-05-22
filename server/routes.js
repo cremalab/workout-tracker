@@ -151,6 +151,7 @@ module.exports = [
             .then((userId) =>{
                 const workout = new Workout({
                     userId,
+                    userEmail: payload.user.email,
                     workout: payload.formData,
                     date: payload.date
                 })

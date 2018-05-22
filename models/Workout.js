@@ -3,6 +3,7 @@ const mongoose = require('mongoose'),
   
 const WorkoutSchema = new Schema({ 
   userId: String,
+  userEmail: String,
   name: String,
   stats: {type: String, toJSON: false, select: false}
 }, {strict: false});

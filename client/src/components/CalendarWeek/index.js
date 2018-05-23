@@ -11,10 +11,9 @@ class CalendarWeek extends Component {
         super(props)
         this.state = {
             startDate: moment().startOf('week'),
-            //endDate: moment().endOf('week').format("MM/DD/YYYY"),
             thisWeekWorkout: ''
         }
-        let url = `/api/workout/eva@gmail.com/${this.state.startDate}`
+        let url = `/api/workout/mandy@crema.us/${this.state.startDate}`
         fetch(url, {
             method: 'GET',
             headers: {
@@ -32,9 +31,10 @@ class CalendarWeek extends Component {
 
     renderHeaderRow = () =>{
         const { startDate } = this.state
+        console.log('startdate: ' + startDate)
         return (
             weekDateArray(startDate).map((day) =>{
-                return <Table.HeaderCell>{day}</Table.HeaderCell>
+                return <Table.HeaderCell>{day.format("ddd DD")}</Table.HeaderCell>
             })
         )
     }
@@ -42,17 +42,22 @@ class CalendarWeek extends Component {
     renderWorkouts = () =>{
         const { startDate, thisWeekWorkout } = this.state;
         let week = weekDateArray(startDate)
-        let myWerk = [{ date: "Sun 20", name:"Hike" }, { date: "Mon 21", name: "Zumba" }]
-        let result = myWerk.find( day => day.date==="Sun 20")
-        console.log(result)
+        let cellsToRender =[]
+    
         return (
             //loop through array of each day that has workout
             thisWeekWorkout.map((workout) => {
-                console.log('workout.date: ' + workout.date)
                 //loop through workout object to get name of each exercise logged
                return (
                     Object.values(workout.workout).map((exercise) =>{
-                        return <Table.Cell>{exercise.exerciseName}</Table.Cell>
+                        for (let i=0; i<7; i++){
+                            if(Number(week[i]) === workout.date){
+                                cellsToRender.push(<Table.Cell>{exercise.exerciseName}</Table.Cell>)
+                            } else {
+                                 cellsToRender.push(<Table.Cell></Table.Cell>)
+                            }
+                        }
+                        return cellsToRender
                     })
                 )
             })

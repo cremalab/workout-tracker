@@ -4,10 +4,12 @@ export const daysOfWeek = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"]
 
 export function weekDateArray(startDate){
     let week = []
+    //console.log('startDate in dateUtil: ' + startDate)
     for(let i=0; i<7; i++){
-        week.push(startDate.format("ddd DD"))
+        week.push(startDate)
         startDate = startDate.clone().add(1, 'days')
     }
+   // console.log('week in dateUtil: ' + week[2])
     return week
 }
 

@@ -82,10 +82,11 @@ module.exports = [
             //Find user with email that's in redux state and return user workouts
             //start date here in long format
             let { email, startDate } = request.params;
-            let response = Workout.find({ userEmail: email })
-                .where("date").gte(startDate)
-                //.exec((err, workouts) =>{})
-            console.log(startDate)
+            let startDateNumber = parseInt(startDate)
+            let endDateNumber = startDateNumber + (7 * 86400)
+            let response = Workout.find({ userEmail: email, date: {$gte: startDateNumber, $lte: 1527379199000} })
+            console.log('startDateNumber: ' + typeof startDateNumber, startDateNumber)
+            console.log('endDateNumber: ' + typeof endDateNumber, endDateNumber)
             return response;  
         }
 

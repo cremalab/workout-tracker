@@ -38,11 +38,14 @@ class FormWorkout extends Component {
     )
   }
   handleSubmit(formData){
+    let selectedDateString = this.props.thisMonth + '/' + this.props.thisDay + '/' + this.props.thisYear
+    let unixDate = moment(selectedDateString, "M/D/YYYY H:mm").valueOf()
+    console.log(this.state.date, unixDate)
     fetch("/api/workout/save",{
       method: 'POST',
       body: JSON.stringify({
         user: this.props.user,
-        date: this.state.date,
+        date: unixDate,
         formData
       }),
       headers: {

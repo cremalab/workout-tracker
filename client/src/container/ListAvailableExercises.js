@@ -9,11 +9,12 @@ class ListAvailableExercises extends Component {
 
     renderList(){
         return _.map(this.props.exercises, exercise => {
+            console.log(exercise)
             return  (
                 <Table.Row>
                     <Table.Cell
                      onClick={() => this.props.selectExercise(exercise)}>
-                        {exercise.name}
+                        {exercise.exerciseName}
                     </Table.Cell>
                 </Table.Row>
             )

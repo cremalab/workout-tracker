@@ -64,13 +64,39 @@ module.exports = [
         handler: async (request, h) => {
             var payload = JSON.parse(request.payload);
             console.log(payload)
-            const workout = new Workout({
-                workout: payload.formData
-            })
-            workout.save((err) => {
-                if(err) {console.log(err); return err}
-                console.log('saved')
-            });
+            const { formData, id } = payload
+            const { exerciseStats } = formData['4']
+            console.log(exerciseStats)
+            let formDataArray = Object.entries(formData)
+            console.log(formDataArray)
+            if(id){ //update existing workout
+                Workout.update(
+                    { _id: id } , 
+                    { $set: { "workout.$.exerciseStats" : '900' } }
+                    //{ arrayFilters: "i:" }
+                , (err, raw) =>{
+                    if (err) console.log(err)
+                    console.log(raw)
+                })
+                    
+                // {
+                //     //workout['exerciseName']: formData['exerciseName']
+                //     //$set: {"workout.$[i].exerciseStats.$[i]" : '900'}
+                // }
+                // , (err, workout) =>{
+                //     if (err) console.log(err)
+                //     console.log(workout)
+                // }
+                //)
+            } else { //add new workout
+                const workout = new Workout({
+                    workout: formData
+                })
+                workout.save((err) => {
+                    if(err) {console.log(err); return err}
+                    console.log('saved')
+                });
+            }
             return payload;
         }
 
@@ -83,10 +109,10 @@ module.exports = [
             //start date here in long format
             let { email, startDate } = request.params;
             let startDateNumber = parseInt(startDate)
-            let endDateNumber = startDateNumber + (7 * 86400)
-            let response = Workout.find({ userEmail: email, date: {$gte: startDateNumber, $lte: 1527379199000} })
-            console.log('startDateNumber: ' + typeof startDateNumber, startDateNumber)
-            console.log('endDateNumber: ' + typeof endDateNumber, endDateNumber)
+            let endDateNumber = startDateNumber + (7 * 86400000)
+            let response = Workout.find({ userEmail: email, date: {$gte: startDateNumber, $lte: endDateNumber} })
+            //console.log('startDateNumber: ' + typeof startDateNumber, startDateNumber)
+            //console.log('endDateNumber: ' + typeof endDateNumber, endDateNumber)
             return response;  
         }
 

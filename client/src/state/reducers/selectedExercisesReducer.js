@@ -6,7 +6,7 @@ export default function(state = {}, action){
                 return state
             }
             return {...state, 
-                    [action.payload.exerciseKey]:action.payload}
+                    [action.payload.exerciseKey]: action.payload}
         case 'UPDATE_EXERCISE':
             const {payload} = action
             const { exerciseKey, 

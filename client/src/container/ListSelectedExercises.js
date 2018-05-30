@@ -1,17 +1,40 @@
 import React, { Component } from 'react'
 import { Table } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { updateExercise } from '../state/actions/updateExercise'
 import _ from 'lodash'
+import { updateExercise } from '../state/actions/updateExercise'
 import { selectExercise } from '../state/actions/selectExercise';
 
 class ListSelectedExercises extends Component {
+    constructor(props){
+        super(props)
+        // let url = '/api/users/profilePic/' + this.props.user.email
+        //     fetch(url, {
+        //         method: 'GET',
+        //         headers: {
+        //             'Accept': 'application/json, text/plain, */*',
+        //             'Content': 'application/json'
+        //         }
+        //     }).then(response => {
+        //         return response.json()
+        //     }).then(data => {
+        //         this.setState({ profilePicId: data.profilePicId })
+        //     })
+
+    }
 
     render(){
         if(this.props.exercises.length === 0){
             return <div>Select a movement to add it to your workout.</div>
         }
-        return (
+        
+        //if user clicks on existing workout to edit it, dispatch action to pre-populate
+        if(this.props.savedExercises){
+            this.props.selectExercise(this.props.savedExercises)
+            this.props.updateExercise
+        }
+
+        return ( 
             <Table basic='very'>
                 <Table.Header>
                     <Table.Row>
@@ -22,7 +45,6 @@ class ListSelectedExercises extends Component {
                     {this.renderList()}   
                 </Table.Body>
             </Table>
-                
         )
     }
 
@@ -34,13 +56,14 @@ class ListSelectedExercises extends Component {
                         {exercise.exerciseName}
                     </Table.Cell>
                     {
-                        Object.keys(exercise.exerciseStats).map( key => {
+                        Object.entries(exercise.exerciseStats).map( statItem => {
                             return (
                                 <Table.Cell>
                                 <input 
-                                    placeholder={key} 
-                                    name={exercise.exerciseName + '.' + key}
-                                    onChange={(event)=>this.handleChange(event, exercise.exerciseKey, key)}/>
+                                    placeholder={statItem[0]} 
+                                    value ={statItem[1]}
+                                    name={exercise.exerciseName + '.' + statItem[0]}
+                                    onChange={(event)=>this.handleChange(event, exercise.exerciseKey, statItem[0])}/>
                                 </Table.Cell>
                             )
                         })
@@ -62,4 +85,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, { updateExercise })(ListSelectedExercises)
+export default connect(mapStateToProps, { updateExercise, selectExercise })(ListSelectedExercises)

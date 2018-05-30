@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import styled from 'styled-components';
-import { Table, Header, Icon } from 'semantic-ui-react'
+import { Table, Header, Icon, Segment, Modal } from 'semantic-ui-react'
 import moment from 'moment';
+import _ from 'lodash'
 import { connect } from 'react-redux';
 import { weekUtil, weekDateArray } from '../../utils/dateUtil'
 import ButtonGroup from '../ButtonGroup'
+import FormWorkout from '../FormWorkout'
 
 class CalendarWeek extends Component {
     constructor(props){
@@ -13,6 +15,7 @@ class CalendarWeek extends Component {
             startDate: moment().startOf('week'),
             thisWeekWorkout: ''
         }
+        //issue: un-hardcode email once feature-profile-page branch is merged
         let url = `/api/workout/mandy@crema.us/${this.state.startDate}`
         fetch(url, {
             method: 'GET',
@@ -25,13 +28,15 @@ class CalendarWeek extends Component {
             return response.json()
         })
         .then((data) => {
+            data.sort((a,b) => { //sort workout entries by date
+                return a.date-b.date
+            })
             this.setState({thisWeekWorkout: data})
         })
     }
 
     renderHeaderRow = () =>{
         const { startDate } = this.state
-        console.log('startdate: ' + startDate)
         return (
             weekDateArray(startDate).map((day) =>{
                 return <Table.HeaderCell>{day.format("ddd DD")}</Table.HeaderCell>
@@ -39,54 +44,105 @@ class CalendarWeek extends Component {
         )
     }
 
+    determineWorkoutDates = () =>{
+        const { thisWeekWorkout } = this.state;
+        let workoutDates = []
+        //array of dates this week that have a workout logged
+        thisWeekWorkout.map((workout) => {
+            workoutDates.push(workout.date)
+        });
+        return workoutDates
+    }
+
     renderWorkouts = () =>{
         const { startDate, thisWeekWorkout } = this.state;
-        let week = weekDateArray(startDate)
-        let cellsToRender =[]
-    
-        return (
-            //loop through array of each day that has workout
-            thisWeekWorkout.map((workout) => {
-                //loop through workout object to get name of each exercise logged
-               return (
-                    Object.values(workout.workout).map((exercise) =>{
-                        for (let i=0; i<7; i++){
-                            if(Number(week[i]) === workout.date){
-                                cellsToRender.push(<Table.Cell>{exercise.exerciseName}</Table.Cell>)
-                            } else {
-                                 cellsToRender.push(<Table.Cell></Table.Cell>)
-                            }
-                        }
-                        return cellsToRender
-                    })
-                )
+        let weekDates = weekDateArray(startDate).map((date) =>{
+            return date.valueOf() //convert moment date object to UNIX time in milliseconds
+        })
+        console.log('weekDates: ' + weekDates)
+
+        let workoutDates = this.determineWorkoutDates()
+        console.log('workoutDates: ' + workoutDates)
+
+        let exercises = []
+        let entryArray = []
+        let cellsToRender = [<Table.Cell></Table.Cell>,
+                            <Table.Cell></Table.Cell>,
+                            <Table.Cell></Table.Cell>,
+                            <Table.Cell></Table.Cell>,
+                            <Table.Cell></Table.Cell>,
+                            <Table.Cell></Table.Cell>,
+                            <Table.Cell></Table.Cell>]
+        
+        //return array of date values where weekDates and workoutDates match
+        let intersection = _.intersection(weekDates, workoutDates)
+        console.log('intersection: ' + intersection)
+
+        //loop through weekDates, return the index from weekDates where a date value matches
+        let matchingIndexArray = []
+        for(let value of intersection){
+            console.log('value:' + value, typeof value)
+            matchingIndexArray.push(weekDates.indexOf(value)) //creates array of matching indexes (ie [0, 3, 6])
+        }
+        console.log('matchingIndexArray: ' + matchingIndexArray)
+
+        thisWeekWorkout.map((entry) => { //for each entry this week
+            entryArray.push(entry)
+            Object.values(entry.workout).map((exercise) =>{ //for each workout logged to one day
+                exercises.push(exercise)
+                //issue: this seems clunky and repetitive. doing it so we have a global variable 
+                    //to reference in code below. Use state instead?
+                    //why not use this logic below instead? too messy?
+                    //shouldn't rely on the order of 2 different arrays to render correctly            
             })
-        )
+        })
+
+        thisWeekWorkout.map((entry) => { //for each entry this week
+            console.log('entry.date: ' + entry.date)
+            for(let i=0; i < intersection.length; i++){ //for as many times as there are workouts logged
+                weekDates.map(date =>{ //for each date of the week
+                    if(entry.date === date){ //if there's a workout logged on that day
+                        console.log(i)
+                        cellsToRender[matchingIndexArray[i]] = 
+                             <Modal 
+                                trigger={<Table.Cell>
+                                            {exercises[i]['exerciseName']}
+                                        </Table.Cell>} 
+                                style={{marginTop: "10%", marginLeft: "10%", marginRight: "10%"}}>
+                             <Modal.Header>Log Workout</Modal.Header>
+                                 <Modal.Content image>
+                                 <Modal.Description>
+                                     <Header></Header>
+                                        <FormWorkout 
+                                            date={workoutDates[i]} 
+                                            savedExercises={exercises[i]}
+                                            entry={entryArray[i]}
+                                            //would prefer entry since that has id to be used downstream 
+                                                //if user wants to update logged workout
+                                        />
+                                 </Modal.Description>
+                                 </Modal.Content>
+                         </Modal>
+                        console.log(entry.workout)
+                    }       
+                })
+            }
+        })
+        return cellsToRender
     }
 
-    renderWorkoutDay = () =>{
-        //for now, assume just one 
-        //return one cell (within only that specific day column) for each movement
-        return (
-            <Table.Row>
-                <Table.Cell></Table.Cell>
-            </Table.Row>
-            //Will be looping so could essentially return multiple 
-            //for multiple movements that day
-            // <Table.Row>
-            //     <Table.Cell></Table.Cell>
-            // </Table.Row>
-        )
-    }
-
-    renderWorkoutWeek = () =>{
-        //return all columns renderWorkoutDay * 7
-        //if undefined, return nothing
-    }
-
-    render() {
+    render(){
         const { thisWeekWorkout } = this.state
-        if(!thisWeekWorkout.length) return null
+        console.log('thisWeekWorkout: ' + thisWeekWorkout)
+        if(!thisWeekWorkout.length) return (
+            <Table celled unstackable>
+                    <Table.Header>
+                        <Table.Row>
+                            {this.renderHeaderRow()}
+                        </Table.Row>
+                    </Table.Header>
+            </Table>
+        )
         return (
             <div>
                 <ButtonGroup />
@@ -109,7 +165,6 @@ class CalendarWeek extends Component {
                     </Table.Header>
                     <Table.Body>
                         <Table.Row>
-                            {/* needs to somehow iterate over cells, knowing where to place */}
                             {this.renderWorkouts()}
                         </Table.Row>
                     </Table.Body>

@@ -11,11 +11,19 @@ class FormWorkout extends Component {
   constructor(props){
     super(props)
     this.state = {
-        date: moment().format(this.props.thisYear + '-' + this.props.thisMonth + '-' + this.props.thisDay) || moment().format('YYYY-MM-DD')
+        date: moment(this.props.date).format('YYYY-MM-DD') || //issue: if this.props.date undefined, still returns today's date
+              moment(this.props.thisYear + '-' + this.props.thisMonth + '-' + this.props.thisDay).format('YYYY-MM-DD') 
+              //|| moment().format('YYYY-MM-DD') 
     }
   }
 
   render() {
+    // console.log(this.props.savedExercises)
+    // console.log(this.props.date)
+    // console.log(moment(undefined).format('YYYY-MM-DD'))
+    console.log(this.props.entry)
+    //receiving date and exercises as props. now need to populate form with that info
+    //instead of recieving all that info why not just get unique id of that workout then GET it from here?
     return (
       <Form onSubmit={() => this.handleSubmit(this.props.formData)}>
         <Form.Group widths='equal'>
@@ -25,31 +33,41 @@ class FormWorkout extends Component {
             </Form.Field>
         </Form.Group>
         <Form.Group inline>
-          <ListSelectedExercises />
+          <ListSelectedExercises savedExercises={this.props.savedExercises}/>
           <ListAvailableExercises />
         </Form.Group>
         <Form.Field 
-          control={Button}
-          onClick={console.log(this.props.handleClose)}>
+          control={Button}>
           Save</Form.Field>
       </Form>
     )
   }
+
   handleSubmit(formData){
+    //send this.props.entry _id to route to query/update correct workout
+    let id = null;
+    if(this.props.entry){
+      id = this.props.entry._id
+    } 
+    // Object.keys(formData =>{
+    //   exerciseName
+    // })
     fetch("/api/workout/save",{
       method: 'POST',
       body: JSON.stringify({
         formData,
+        id
       }),
       headers: {
           'Accept': 'application/json, */*',
-          'Content': 'application/json',
+          'Content': 'application/json'
       }
       }).then(response => {
         //console.log(response);
       })
       .catch(err => console.log('Error: ' + err))
   }
+
 }
 
 const mapStateToProps = (state) =>{

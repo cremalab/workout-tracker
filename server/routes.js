@@ -65,57 +65,16 @@ module.exports = [
             var payload = JSON.parse(request.payload);
             console.log(payload)
             const { formData, id } = payload
-            //const { exerciseStats } = formData
-            //console.log(exerciseStats)
-            let flatData = {}
-            Object.keys(formData).forEach((key) =>{
-                if(typeof(formData[key]) === "object"){
-                    Object.keys(formData[key]).forEach( subkey => {
-                        if(typeof formData[key][subkey] === "object"){
-                            Object.keys(formData[key][subkey]).forEach(lowkey =>{
-                                flatData[key + "." + subkey + "." + lowkey]  = formData[key][subkey][lowkey]
-                            })
-                        }
-                    })
-                } else {
-                    flatData[key] = formData[key]
-                }
-            })
-            console.log(flatData)
- 
+    
             if(id){ //update existing workout
-                // Workout.findOne({ _id: id }, (err, entry) => {
-                //     if(err) console.log(err)
-                //     console.log(entry)
-                // })
-
                 Workout.update(
                     { _id: id } , 
-                    { $set: { "workout.4.exerciseStats" : flatData} }
+                    { $set: { "workout" : formData} }
                     //{ arrayFilters: "i:" }
                 , (err, raw) =>{
                     if (err) console.log(err)
                     console.log(raw)
                 })
-
-                // Workout.find({ _id: id })
-                // .forEach(entry => {
-                //     if(entry.$){
-
-                //     }
-                // })
-            //can't use arrayfilters because it's not an array in DB
-            //can't use multiple positional parameters
-            //use forEach?        
-                // {
-                //     //workout['exerciseName']: formData['exerciseName']
-                //     //$set: {"workout.$[i].exerciseStats.$[i]" : '900'}
-                // }
-                // , (err, workout) =>{
-                //     if (err) console.log(err)
-                //     console.log(workout)
-                // }
-                //)
             } else { //add new workout
                 const workout = new Workout({
                     workout: formData

@@ -39,6 +39,18 @@ class CalendarWeek extends Component {
             })
     }
 
+    previousWeek = () =>{
+        this.setState({
+            startDate: this.state.startDate.clone().subtract(7, 'days')
+        })
+    }
+
+    nextWeek = () =>{
+        this.setState({
+            startDate: this.state.startDate.clone().add(7, 'days')
+        })
+    }
+
     renderHeaderRow = () =>{
         const { startDate } = this.state
         return (
@@ -164,13 +176,13 @@ class CalendarWeek extends Component {
                 <ButtonGroup />
                 <HeaderWrapper>
                     <Header floated='left' style={HeaderArrow}>
-                        <Icon name="arrow left" size="big" onClick={this.previousMonth}/>
+                        <Icon name="arrow left" size="big" onClick={this.previousWeek}/>
                     </Header>
                     <Title>
                      
                     </Title>
                     <Header floated='right' style={HeaderArrow}>
-                     <Icon name="arrow right" size="big" onClick={this.nextMonth}/>
+                     <Icon name="arrow right" size="big" onClick={this.nextWeek}/>
                     </Header>
                 </HeaderWrapper>
                 <Table celled unstackable>

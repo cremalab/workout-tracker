@@ -65,20 +65,48 @@ module.exports = [
             var payload = JSON.parse(request.payload);
             console.log(payload)
             const { formData, id } = payload
-            const { exerciseStats } = formData['4']
-            console.log(exerciseStats)
-            let formDataArray = Object.entries(formData)
-            console.log(formDataArray)
+            //const { exerciseStats } = formData
+            //console.log(exerciseStats)
+            let flatData = {}
+            Object.keys(formData).forEach((key) =>{
+                if(typeof(formData[key]) === "object"){
+                    Object.keys(formData[key]).forEach( subkey => {
+                        if(typeof formData[key][subkey] === "object"){
+                            Object.keys(formData[key][subkey]).forEach(lowkey =>{
+                                flatData[key + "." + subkey + "." + lowkey]  = formData[key][subkey][lowkey]
+                            })
+                        }
+                    })
+                } else {
+                    flatData[key] = formData[key]
+                }
+            })
+            console.log(flatData)
+ 
             if(id){ //update existing workout
+                // Workout.findOne({ _id: id }, (err, entry) => {
+                //     if(err) console.log(err)
+                //     console.log(entry)
+                // })
+
                 Workout.update(
                     { _id: id } , 
-                    { $set: { "workout.$.exerciseStats" : '900' } }
+                    { $set: { "workout.4.exerciseStats" : flatData} }
                     //{ arrayFilters: "i:" }
                 , (err, raw) =>{
                     if (err) console.log(err)
                     console.log(raw)
                 })
-                    
+
+                // Workout.find({ _id: id })
+                // .forEach(entry => {
+                //     if(entry.$){
+
+                //     }
+                // })
+            //can't use arrayfilters because it's not an array in DB
+            //can't use multiple positional parameters
+            //use forEach?        
                 // {
                 //     //workout['exerciseName']: formData['exerciseName']
                 //     //$set: {"workout.$[i].exerciseStats.$[i]" : '900'}
@@ -116,5 +144,16 @@ module.exports = [
             return response;  
         }
 
+    },
+    {   //Delete workout
+        method: 'POST',
+        path: '/api/workout/delete/{id}',
+        handler: async (request, h) => {
+            let {id} = request.params
+            Workout.findByIdAndRemove(id , (err) =>{
+                if(err) console.log(err)
+            })
+            return request
+        }
     }
 ];

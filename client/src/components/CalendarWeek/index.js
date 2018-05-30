@@ -15,24 +15,28 @@ class CalendarWeek extends Component {
             startDate: moment().startOf('week'),
             thisWeekWorkout: ''
         }
-        //issue: un-hardcode email once feature-profile-page branch is merged
-        let url = `/api/workout/mandy@crema.us/${this.state.startDate}`
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content': 'application/json'
-            }
-        })
-        .then(response => {
-            return response.json()
-        })
-        .then((data) => {
-            data.sort((a,b) => { //sort workout entries by date
-                return a.date-b.date
+        this.fetchWorkouts()
+    }
+
+    fetchWorkouts = () => {
+            //issue: un-hardcode email once feature-profile-page branch is merged
+            let url = `/api/workout/mandy@crema.us/${this.state.startDate}`
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content': 'application/json'
+                }
             })
-            this.setState({thisWeekWorkout: data})
-        })
+            .then(response => {
+                return response.json()
+            })
+            .then((data) => {
+                data.sort((a,b) => { //sort workout entries by date
+                    return a.date-b.date
+                })
+                this.setState({thisWeekWorkout: data})
+            })
     }
 
     renderHeaderRow = () =>{
@@ -54,6 +58,7 @@ class CalendarWeek extends Component {
         return workoutDates
     }
 
+    //issue: break up into smaller functions
     renderWorkouts = () =>{
         const { startDate, thisWeekWorkout } = this.state;
         let weekDates = weekDateArray(startDate).map((date) =>{
@@ -89,11 +94,7 @@ class CalendarWeek extends Component {
         thisWeekWorkout.map((entry) => { //for each entry this week
             entryArray.push(entry)
             Object.values(entry.workout).map((exercise) =>{ //for each workout logged to one day
-                exercises.push(exercise)
-                //issue: this seems clunky and repetitive. doing it so we have a global variable 
-                    //to reference in code below. Use state instead?
-                    //why not use this logic below instead? too messy?
-                    //shouldn't rely on the order of 2 different arrays to render correctly            
+                exercises.push(exercise)        
             })
         })
 
@@ -104,12 +105,13 @@ class CalendarWeek extends Component {
                     if(entry.date === date){ //if there's a workout logged on that day
                         console.log(i)
                         cellsToRender[matchingIndexArray[i]] = 
-                             <Modal 
+                            <Modal 
                                 trigger={<Table.Cell>
                                             {exercises[i]['exerciseName']}
+                                            <Icon name="trash" onClick={ event => this.handleDelete(event, entryArray[i]['_id']) } />
                                         </Table.Cell>} 
                                 style={{marginTop: "10%", marginLeft: "10%", marginRight: "10%"}}>
-                             <Modal.Header>Log Workout</Modal.Header>
+                                 <Modal.Header>Log Workout</Modal.Header>
                                  <Modal.Content image>
                                  <Modal.Description>
                                      <Header></Header>
@@ -117,18 +119,32 @@ class CalendarWeek extends Component {
                                             date={workoutDates[i]} 
                                             savedExercises={exercises[i]}
                                             entry={entryArray[i]}
-                                            //would prefer entry since that has id to be used downstream 
-                                                //if user wants to update logged workout
                                         />
                                  </Modal.Description>
                                  </Modal.Content>
-                         </Modal>
+                            </Modal>
+                            
                         console.log(entry.workout)
                     }       
                 })
             }
         })
         return cellsToRender
+    }
+
+    handleDelete = (event, id) =>{
+        event.stopPropagation()
+        console.log(id)
+        let url = '/api/workout/delete/' + id
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content': 'application/json'
+            }
+        }).then(
+            this.fetchWorkouts()
+        )
     }
 
     render(){

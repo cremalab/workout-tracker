@@ -18,12 +18,7 @@ class FormWorkout extends Component {
   }
 
   render() {
-    // console.log(this.props.savedExercises)
-    // console.log(this.props.date)
-    // console.log(moment(undefined).format('YYYY-MM-DD'))
     console.log(this.props.entry)
-    //receiving date and exercises as props. now need to populate form with that info
-    //instead of recieving all that info why not just get unique id of that workout then GET it from here?
     return (
       <Form onSubmit={() => this.handleSubmit(this.props.formData)}>
         <Form.Group widths='equal'>
@@ -44,14 +39,11 @@ class FormWorkout extends Component {
   }
 
   handleSubmit(formData){
-    //send this.props.entry _id to route to query/update correct workout
     let id = null;
     if(this.props.entry){
       id = this.props.entry._id
     } 
-    // Object.keys(formData =>{
-    //   exerciseName
-    // })
+
     fetch("/api/workout/save",{
       method: 'POST',
       body: JSON.stringify({

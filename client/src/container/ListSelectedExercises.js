@@ -51,7 +51,6 @@ class ListSelectedExercises extends Component {
     }
 
     handleChange = (event, exerciseKey, exerciseStatKey) => {
-        console.log({[event.target.name]: event.target.value})
         this.props.updateExercise(exerciseKey, exerciseStatKey, event.target.value)
     }
 }

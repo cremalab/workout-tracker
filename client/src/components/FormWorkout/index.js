@@ -21,7 +21,9 @@ class FormWorkout extends Component {
         <Form.Group widths='equal'>
             <SearchBar />
             <Form.Field>
-              <input type='date' defaultValue={this.state.date}/>
+              <input 
+                type='date' 
+                defaultValue={this.state.date}/>
             </Form.Field>
         </Form.Group>
         <Form.Group inline>
@@ -36,9 +38,14 @@ class FormWorkout extends Component {
     )
   }
   handleSubmit(formData){
+    let selectedDateString = this.props.thisMonth + '/' + this.props.thisDay + '/' + this.props.thisYear
+    let unixDate = moment(selectedDateString, "M/D/YYYY H:mm").valueOf()
+    console.log(this.state.date, unixDate)
     fetch("/api/workout/save",{
       method: 'POST',
       body: JSON.stringify({
+        user: this.props.user,
+        date: unixDate,
         formData
       }),
       headers: {
@@ -54,7 +61,8 @@ class FormWorkout extends Component {
 
 const mapStateToProps = (state) =>{
   return{
-    formData: state.activeExercises
+    formData: state.activeExercises,
+    user: state.user
   }
 }
 

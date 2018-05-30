@@ -6,7 +6,16 @@ const mongoose = require('mongoose'),
 const UserSchema = new Schema({
   email: String,
   password: {type: String, toJSON: false, select: false},
-});
+  profilePicId: String,
+  firstName: String,
+  lastName: String,
+  bio: String, 
+  age: Number, 
+  weight: Number, 
+  goalWeight: Number,  
+  gender: String, 
+  DOB: String,
+}, {strict: false});
 
 UserSchema.plugin(passportLocalMongoose, { 
   usernameField: 'email', 

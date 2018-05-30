@@ -1,6 +1,9 @@
-import React, { Component } from 'react'
-import styled from 'styled-components'
-import { Redirect } from 'react-router-dom'
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux'
+import { updateUser } from '../../state/actions/updateUser'
+import { bindActionCreators } from 'redux'
 import { Segment, Button, Divider, Form } from 'semantic-ui-react'
 
 class LogIn extends Component {
@@ -79,6 +82,7 @@ class LogIn extends Component {
     }
     handleSuccessfulLogin = () => {
       this.setState({ authenticated: true});
+      this.props.updateUser(this.state.logInEmail)
     }
     handleUnsuccessfulLogin = () => {
       this.setState({ authenticated: false});
@@ -86,4 +90,10 @@ class LogIn extends Component {
     }
 }
 
-export default LogIn;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+}
+
+export default connect(mapStateToProps, {updateUser})(LogIn);

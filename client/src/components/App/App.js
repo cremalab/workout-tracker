@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
 import styled from 'styled-components';
+import { connect } from 'react-redux'
+import { updateUser } from '../../state/actions/updateUser'
+import { bindActionCreators } from 'redux'
 import { Link, Redirect } from 'react-router-dom';
 import { Segment, Button, Divider, Form } from 'semantic-ui-react'
 
@@ -17,31 +20,6 @@ class App extends Component {
   render() {
     return (
       <div>   
-          {/* Sign Up <br/>
-          <form>
-            <input
-              type="email"
-              name="signUpEmail"
-              placeholder="Email"
-              value={this.state.signUpEmail}
-              onChange={this.handleChange}/><br/> 
-             <input
-              type="password"
-              name="signUpPassword"
-              placeholder="Password"
-              value={this.state.signUpPassword}
-              onChange={this.handleChange}/><br/>
-            <input
-              type="password"
-              name="signUpPasswordConfirm"
-              placeholder="Confirm Password"
-              value={this.state.signUpPasswordConfirm}
-              onChange={this.handleChange}/><br/>  
-            <input 
-              type="submit" 
-              value="Submit" 
-              onClick={this.handleSubmit}/>
-          </form>  */}
           <Segment padded width={8}>
             <Form>
               <Form.Field>
@@ -106,7 +84,15 @@ class App extends Component {
           'Content': 'application/json'
         }
       }).then(response => response.json())
+      this.props.updateUser(signUpEmail, null)
     }
   }
 }
-export default App;
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+}
+
+export default connect(mapStateToProps, {updateUser})(App);

@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import { weekUtil, weekDateArray } from '../../utils/dateUtil'
 import ButtonGroup from '../ButtonGroup'
 import FormWorkout from '../FormWorkout'
+import CalendarHeader from '../CalendarHeader';
+import CalendarTableHeader from '../CalendarTableHeader';
 
 class CalendarWeek extends Component {
     constructor(props){
@@ -39,27 +41,6 @@ class CalendarWeek extends Component {
             })
     }
 
-    previousWeek = () =>{
-        this.setState({
-            startDate: this.state.startDate.clone().subtract(7, 'days')
-        })
-    }
-
-    nextWeek = () =>{
-        this.setState({
-            startDate: this.state.startDate.clone().add(7, 'days')
-        })
-    }
-
-    renderHeaderRow = () =>{
-        const { startDate } = this.state
-        return (
-            weekDateArray(startDate).map((day) =>{
-                return <Table.HeaderCell>{day.format("ddd DD")}</Table.HeaderCell>
-            })
-        )
-    }
-
     determineWorkoutDates = () =>{
         const { thisWeekWorkout } = this.state;
         let workoutDates = []
@@ -68,6 +49,20 @@ class CalendarWeek extends Component {
             workoutDates.push(workout.date)
         });
         return workoutDates
+    }
+
+    previousWeek = () =>{
+        this.setState({
+            startDate: this.state.startDate.clone().subtract(7, 'days')
+        })
+        this.fetchWorkouts()
+    }
+    
+    nextWeek = () =>{
+        this.setState({
+            startDate: this.state.startDate.clone().add(7, 'days')
+        })
+        this.fetchWorkouts()
     }
 
     //issue: break up into smaller functions
@@ -162,35 +157,29 @@ class CalendarWeek extends Component {
     render(){
         const { thisWeekWorkout } = this.state
         console.log('thisWeekWorkout: ' + thisWeekWorkout)
-        if(!thisWeekWorkout.length) return (
-            <Table celled unstackable>
-                    <Table.Header>
-                        <Table.Row>
-                            {this.renderHeaderRow()}
-                        </Table.Row>
-                    </Table.Header>
-            </Table>
-        )
+        console.log("next startDate: " + this.state.startDate)
+        console.log('LEN: ' + thisWeekWorkout.length)
+        if(!thisWeekWorkout.length) {
+            return (
+                <div>
+                    <CalendarHeader 
+                        nextWeek={this.nextWeek}
+                        previousWeek={this.previousWeek}/>
+                    <Table celled unstackable>
+                        <CalendarTableHeader
+                            startDate={this.state.startDate} />
+                    </Table>
+                </div>
+            )
+        }
         return (
             <div>
-                <ButtonGroup />
-                <HeaderWrapper>
-                    <Header floated='left' style={HeaderArrow}>
-                        <Icon name="arrow left" size="big" onClick={this.previousWeek}/>
-                    </Header>
-                    <Title>
-                     
-                    </Title>
-                    <Header floated='right' style={HeaderArrow}>
-                     <Icon name="arrow right" size="big" onClick={this.nextWeek}/>
-                    </Header>
-                </HeaderWrapper>
+                <CalendarHeader 
+                    nextWeek={this.nextWeek}
+                    previousWeek={this.previousWeek}/>
                 <Table celled unstackable>
-                    <Table.Header>
-                        <Table.Row>
-                            {this.renderHeaderRow()}
-                        </Table.Row>
-                    </Table.Header>
+                    <CalendarTableHeader
+                        startDate={this.state.startDate} />
                     <Table.Body>
                         <Table.Row>
                             {this.renderWorkouts()}
@@ -201,28 +190,6 @@ class CalendarWeek extends Component {
         );
     }
 }
-const HeaderWrapper = styled.div`
-    height: 80px;
-    width: 95%;
-    margin: 3%;
-    overflow: hidden;
-`;
-
-const HeaderArrow = {
-    color: "#FA8072", 
-    paddingTop: "5%"
-};
-
-const Title = styled.span`
-    position: absolute;
-    font-family: Helvetica;
-    font-size: 3em;
-    color: #FA8072;
-    text-align: center;
-    margin-top: 5%;
-    font-weight: bold;
-    text-transform: uppercase;
-`;
 
 const mapStateToProps = (state) =>{
     return {

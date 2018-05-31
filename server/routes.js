@@ -64,15 +64,55 @@ module.exports = [
         handler: async (request, h) => {
             var payload = JSON.parse(request.payload);
             console.log(payload)
-            const workout = new Workout({
-                workout: payload.formData
-            })
-            workout.save((err) => {
-                if(err) {console.log(err); return err}
-                console.log('saved')
-            });
+            const { formData, id } = payload
+    
+            if(id){ //update existing workout
+                Workout.update(
+                    { _id: id } , 
+                    { $set: { "workout" : formData} }
+                    //{ arrayFilters: "i:" }
+                , (err, raw) =>{
+                    if (err) console.log(err)
+                    console.log(raw)
+                })
+            } else { //add new workout
+                const workout = new Workout({
+                    workout: formData
+                })
+                workout.save((err) => {
+                    if(err) {console.log(err); return err}
+                    console.log('saved')
+                });
+            }
             return payload;
         }
 
+    },
+    {   //Retrieve logged workouts
+        method: 'GET',
+        path: '/api/workout/{email}/{startDate}',
+        handler: async (request, h) => {
+            //Find user with email that's in redux state and return user workouts
+            //start date here in long format
+            let { email, startDate } = request.params;
+            let startDateNumber = parseInt(startDate)
+            let endDateNumber = startDateNumber + (7 * 86400000)
+            let response = Workout.find({ userEmail: email, date: {$gte: startDateNumber, $lte: endDateNumber} })
+            console.log('startDateNumber: ' + typeof startDateNumber, startDateNumber)
+            console.log('endDateNumber: ' + typeof endDateNumber, endDateNumber)
+            return response;  
+        }
+
+    },
+    {   //Delete workout
+        method: 'POST',
+        path: '/api/workout/delete/{id}',
+        handler: async (request, h) => {
+            let {id} = request.params
+            Workout.findByIdAndRemove(id , (err) =>{
+                if(err) console.log(err)
+            })
+            return request
+        }
     }
 ];

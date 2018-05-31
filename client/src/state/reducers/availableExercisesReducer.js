@@ -1,31 +1,31 @@
 const defaultState = {
     1: {
-        key: '1',
-        name: 'Run',
+        exerciseKey: '1',
+        exerciseName: 'Run',
         exerciseStats:{
           distance: '',
           time: ''
         }
     },
     2: {
-        key: '2',
-        name: 'Bike',
+        exerciseKey: '2',
+        exerciseName: 'Bike',
         exerciseStats:{
             distance: '',
             time: ''
         }
     },
     3: {
-        key: '3',
-        name: 'Row',
+        exerciseKey: '3',
+        exerciseName: 'Row',
         exerciseStats:{
             distance: '',
             time: ''
         }
     },
     4: {
-        key: '4',
-        name: 'Back Squat',
+        exerciseKey: '4',
+        exerciseName: 'Back Squat',
         exerciseStats:{
             rounds: '',
             reps: '',
@@ -33,8 +33,8 @@ const defaultState = {
         }
     },
     5: {
-        key: '5',
-        name: 'Hang Clean',
+        exerciseKey: '5',
+        exerciseName: 'Hang Clean',
         exerciseStats:{
             rounds: '',
             reps: '',
@@ -42,8 +42,8 @@ const defaultState = {
         }
     },
     6: {
-        key: '6',
-        name: 'Kettlebell Swing',
+        exerciseKey: '6',
+        exerciseName: 'Kettlebell Swing',
         exerciseStats:{
             rounds: '',
             reps: '',

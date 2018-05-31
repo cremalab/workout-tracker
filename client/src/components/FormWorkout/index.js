@@ -11,11 +11,14 @@ class FormWorkout extends Component {
   constructor(props){
     super(props)
     this.state = {
-        date: moment().format(this.props.thisYear + '-' + this.props.thisMonth + '-' + this.props.thisDay) || moment().format('YYYY-MM-DD')
+        date: moment(this.props.date).format('YYYY-MM-DD') || //issue: if this.props.date undefined, still returns today's date
+              moment(this.props.thisYear + '-' + this.props.thisMonth + '-' + this.props.thisDay).format('YYYY-MM-DD') 
+              //|| moment().format('YYYY-MM-DD') 
     }
   }
 
   render() {
+    console.log(this.props.entry)
     return (
       <Form onSubmit={() => this.handleSubmit(this.props.formData)}>
         <Form.Group widths='equal'>
@@ -25,31 +28,38 @@ class FormWorkout extends Component {
             </Form.Field>
         </Form.Group>
         <Form.Group inline>
-          <ListSelectedExercises />
-          <ListAvailableExercises/>
+          <ListSelectedExercises savedExercises={this.props.savedExercises}/>
+          <ListAvailableExercises />
         </Form.Group>
         <Form.Field 
-          control={Button}
-          onClick={console.log(this.props.handleClose)}>
+          control={Button}>
           Save</Form.Field>
       </Form>
     )
   }
+
   handleSubmit(formData){
+    let id = null;
+    if(this.props.entry){
+      id = this.props.entry._id
+    } 
+
     fetch("/api/workout/save",{
       method: 'POST',
       body: JSON.stringify({
-        formData
+        formData,
+        id
       }),
       headers: {
           'Accept': 'application/json, */*',
-          'Content': 'application/json',
+          'Content': 'application/json'
       }
       }).then(response => {
         //console.log(response);
       })
       .catch(err => console.log('Error: ' + err))
   }
+
 }
 
 const mapStateToProps = (state) =>{

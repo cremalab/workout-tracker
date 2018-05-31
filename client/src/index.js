@@ -12,6 +12,8 @@ import ModalWorkout from './components/ModalWorkout'
 import LogIn from './components/LogIn'
 import Dashboard from './components/Dashboard'
 import Calendar from './components/Calendar'
+import CalendarWeek from './components/CalendarWeek'
+import CalendarDay from './components/CalendarDay'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import reducers from './state/reducers'
@@ -46,7 +48,9 @@ ReactDOM.render((
                         <Route path="/workout" component={ModalWorkout} />
                         <Route path="/login" component={LogIn} />
                         <Route path="/dashboard" component={Dashboard} />
-                        <Route path="/calendar" component={Calendar} />
+                        <Route exact path="/calendar" component={Calendar} />
+                        <Route path="/calendar/week" component={CalendarWeek} />
+                        <Route path="/calendar/day" component={CalendarDay} />
                     </div>
                 </InnerWrapper>
             </OuterWrapper>

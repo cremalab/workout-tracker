@@ -1,5 +1,18 @@
 import moment from 'moment';
 
+export const daysOfWeek = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"]
+
+export function weekDateArray(startDate){
+    let week = []
+   
+    for(let i=0; i<7; i++){
+        week.push(startDate)
+        startDate = startDate.clone().add(1, 'days')
+    }
+ 
+    return week
+}
+
 export function weekUtil(year, month, weekNumber){
     let startDate = moment([year, month]),
         offsetStartDate = moment([year, month]).add(weekNumber - 1, 'week'),

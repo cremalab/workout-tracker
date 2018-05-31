@@ -3,8 +3,8 @@ export function selectExercise(exercise){
         type: 'SELECT_EXERCISE',
         payload: 
         {
-            exerciseKey: exercise.key,
-            exerciseName: exercise.name,
+            exerciseKey: exercise.exerciseKey,
+            exerciseName: exercise.exerciseName,
             exerciseStats: exercise.exerciseStats
         }
     }

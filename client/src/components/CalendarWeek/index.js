@@ -15,13 +15,17 @@ class CalendarWeek extends Component {
         super(props)
         this.state = {
             startDate: moment().startOf('week'),
-            thisWeekWorkout: ''
+            thisWeekWorkout: [],
+            workoutDates: []
         }
         this.fetchWorkouts()
     }
 
     fetchWorkouts = () => {
+            console.log('FETCH')
+            console.log('START FETCH: ' + this.state.startDate)
             //issue: un-hardcode email once feature-profile-page branch is merged
+                    //this.state.startDate not updated in nextWeek or prevWeek before being used here
             let url = `/api/workout/mandy@crema.us/${this.state.startDate}`
             fetch(url, {
                 method: 'GET',
@@ -37,18 +41,23 @@ class CalendarWeek extends Component {
                 data.sort((a,b) => { //sort workout entries by date
                     return a.date-b.date
                 })
-                this.setState({thisWeekWorkout: data})
+                this.setState({ thisWeekWorkout: data })
+                this.determineWorkoutDates()
             })
     }
 
     determineWorkoutDates = () =>{
         const { thisWeekWorkout } = this.state;
-        let workoutDates = []
+        let workoutDatesHolder = []
+
         //array of dates this week that have a workout logged
         thisWeekWorkout.map((workout) => {
-            workoutDates.push(workout.date)
+            workoutDatesHolder.push(workout.date)
         });
-        return workoutDates
+
+        this.setState({
+            workoutDates: workoutDatesHolder 
+        })
     }
 
     previousWeek = () =>{
@@ -67,13 +76,11 @@ class CalendarWeek extends Component {
 
     //issue: break up into smaller functions
     renderWorkouts = () =>{
-        const { startDate, thisWeekWorkout } = this.state;
+        const { startDate, thisWeekWorkout, workoutDates } = this.state;
         let weekDates = weekDateArray(startDate).map((date) =>{
             return date.valueOf() //convert moment date object to UNIX time in milliseconds
         })
         console.log('weekDates: ' + weekDates)
-
-        let workoutDates = this.determineWorkoutDates()
         console.log('workoutDates: ' + workoutDates)
 
         let exercises = []
@@ -106,11 +113,11 @@ class CalendarWeek extends Component {
         })
 
         thisWeekWorkout.map((entry) => { //for each entry this week
-            console.log('entry.date: ' + entry.date)
+            //console.log('entry.date: ' + entry.date)
             for(let i=0; i < intersection.length; i++){ //for as many times as there are workouts logged
                 weekDates.map(date =>{ //for each date of the week
                     if(entry.date === date){ //if there's a workout logged on that day
-                        console.log(i)
+                       // console.log(i)
                         cellsToRender[matchingIndexArray[i]] = 
                             <Modal 
                                 trigger={<Table.Cell>
@@ -130,8 +137,6 @@ class CalendarWeek extends Component {
                                  </Modal.Description>
                                  </Modal.Content>
                             </Modal>
-                            
-                        console.log(entry.workout)
                     }       
                 })
             }

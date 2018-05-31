@@ -98,8 +98,8 @@ module.exports = [
             let startDateNumber = parseInt(startDate)
             let endDateNumber = startDateNumber + (7 * 86400000)
             let response = Workout.find({ userEmail: email, date: {$gte: startDateNumber, $lte: endDateNumber} })
-            //console.log('startDateNumber: ' + typeof startDateNumber, startDateNumber)
-            //console.log('endDateNumber: ' + typeof endDateNumber, endDateNumber)
+            console.log('startDateNumber: ' + typeof startDateNumber, startDateNumber)
+            console.log('endDateNumber: ' + typeof endDateNumber, endDateNumber)
             return response;  
         }
 
